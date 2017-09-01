@@ -12,6 +12,7 @@
 #include <QSettings>
 #include <QMessageBox>
 #include <QScopedPointer>
+#include <QLabel>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -26,10 +27,14 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->fetchRundowButton, &QPushButton::clicked, this, &MainWindow::getRundownRows);
     connect(ui->generateButton, &QPushButton::clicked, this, &MainWindow::generateCasparCG);
 
+    m_statusLabel = new QLabel (ui->statusBar);
+    ui->statusBar->addPermanentWidget(m_statusLabel);
+
     m_rundownCreator = new RundownCreator(this);
     connect(m_rundownCreator, &RundownCreator::rundownsReceived, this, &MainWindow::updateRundowns);
     connect(m_rundownCreator, &RundownCreator::rowsReceived, this, &MainWindow::updateRows);
     connect(m_rundownCreator, &RundownCreator::error, this, &MainWindow::showRundownCreatorError);
+    connect(m_rundownCreator, &RundownCreator::status, m_statusLabel, &QLabel::setText);
 
     QSettings settings;
     m_rundownCreator->setApiUrl(settings.value("RundownCreator/Url").toString());

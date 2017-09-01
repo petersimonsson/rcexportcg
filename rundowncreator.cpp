@@ -48,6 +48,7 @@ void RundownCreator::getRundowns()
 
     QNetworkRequest request(requestUrl);
     m_netManager->get(request);
+    emit status(tr("Fetching Rundowns..."));
 }
 
 void RundownCreator::fetchRows(quint32 rundownId)
@@ -61,15 +62,16 @@ void RundownCreator::fetchRows(quint32 rundownId)
 
     QNetworkRequest request(requestUrl);
     m_netManager->get(request);
+    emit status(tr("Fetching Rows..."));
 }
 
 void RundownCreator::handleFinished(QNetworkReply *reply)
 {
     QString query = reply->url().query();
     QByteArray data = reply->readAll();
-    int status = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+    int statusCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
 
-    switch(status)
+    switch(statusCode)
     {
     case 200:
         if(query.contains("Action=getRundowns"))
@@ -89,11 +91,12 @@ void RundownCreator::handleFinished(QNetworkReply *reply)
         emit error(tr("Internal server error."));
         break;
     default:
-        qDebug() << "Status:" << status << "Data:" << data;
+        qDebug() << "Status:" << statusCode << "Data:" << data;
         break;
     }
 
     reply->deleteLater();
+    emit status(tr("Ready."));
 }
 
 void RundownCreator::handleRundowns(const QByteArray &data)

@@ -8,6 +8,7 @@ class MainWindow;
 }
 
 class RundownCreator;
+class QLabel;
 
 class MainWindow : public QMainWindow
 {
@@ -34,6 +35,8 @@ private:
     Ui::MainWindow *ui;
 
     RundownCreator *m_rundownCreator;
+
+    QLabel *m_statusLabel;
 };
 
 #endif // MAINWINDOW_H
