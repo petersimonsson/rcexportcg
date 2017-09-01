@@ -39,32 +39,32 @@ void CasparCGGenerator::convert(const QList<RundownRow*> &rowList, QIODevice *ou
                 writer.writeTextElement("devicename", m_deviceName);
                 writer.writeTextElement("label", object.file);
                 writer.writeTextElement("name", object.file);
-                writer.writeTextElement("channel", "1");
-                writer.writeTextElement("videolayer", "10");
-                writer.writeTextElement("delay", "0");
-                writer.writeTextElement("duration", "0");
-                writer.writeTextElement("allowgpi", "false");
-                writer.writeTextElement("allowremotetriggering", "false");
-                writer.writeTextElement("remotetriggerid", "");
-                writer.writeTextElement("storyid", "");
-                writer.writeTextElement("transition", "CUT");
-                writer.writeTextElement("transitionDuration", "1");
-                writer.writeTextElement("tween", "Linear");
-                writer.writeTextElement("direction", "RIGHT");
+                writer.writeTextElement("channel", m_channel);
+                writer.writeTextElement("videolayer", m_videoLayer);
+                writer.writeTextElement("delay", m_delay);
+                writer.writeTextElement("duration", m_duration);
+                writer.writeTextElement("allowgpi", boolToString(m_allowGpi));
+                writer.writeTextElement("allowremotetriggering", boolToString(m_allowRemoteTriggering));
+                writer.writeTextElement("remotetriggerid", m_remoteTriggeringId);
+                writer.writeTextElement("storyid", m_storyId);
+                writer.writeTextElement("transition", m_transition);
+                writer.writeTextElement("transitionDuration", m_transitionDuration);
+                writer.writeTextElement("tween", m_tween);
+                writer.writeTextElement("direction", m_direction);
                 if(object.type == "video")
                 {
-                    writer.writeTextElement("seek", "0");
-                    writer.writeTextElement("length", "0");
-                    writer.writeTextElement("loop", "false");
-                    writer.writeTextElement("freezeonload", "false");
-                    writer.writeTextElement("autoplay", "false");
+                    writer.writeTextElement("seek", m_seek);
+                    writer.writeTextElement("length", m_length);
+                    writer.writeTextElement("loop", boolToString(m_loop));
+                    writer.writeTextElement("freezeonload", boolToString(m_freezeOnLoad));
+                    writer.writeTextElement("autoplay", boolToString(m_autoPlay));
                 }
                 else if(object.type == "image")
                 {
-                    writer.writeTextElement("useauto", "false");
+                    writer.writeTextElement("useauto", boolToString(m_useAuto));
                 }
-                writer.writeTextElement("triggeronnext", "false");
-                writer.writeTextElement("color", "Transparent");
+                writer.writeTextElement("triggeronnext", boolToString(m_triggerOnNext));
+                writer.writeTextElement("color", m_color);
                 writer.writeEndElement();
             }
         }
@@ -72,4 +72,12 @@ void CasparCGGenerator::convert(const QList<RundownRow*> &rowList, QIODevice *ou
 
     writer.writeEndElement();
     writer.writeEndDocument();
+}
+
+QString CasparCGGenerator::boolToString(bool state)
+{
+    if(state)
+        return QString("true");
+
+    return QString("false");
 }

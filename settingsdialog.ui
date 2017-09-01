@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>176</height>
+    <width>484</width>
+    <height>689</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -74,18 +74,67 @@
        <string>CasparCG</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout_3">
+       <item row="10" column="1">
+        <widget class="QComboBox" name="transitionCombo">
+         <item>
+          <property name="text">
+           <string>CUT</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>MIX</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>PUSH</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>SLIDE</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>WIPE</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QLineEdit" name="ccgServerNameEdit"/>
+       </item>
+       <item row="1" column="1">
+        <widget class="QLineEdit" name="ccgRundownLocationEdit"/>
+       </item>
+       <item row="5" column="1">
+        <widget class="QLineEdit" name="durationEdit"/>
+       </item>
+       <item row="11" column="0">
+        <widget class="QLabel" name="label_15">
+         <property name="text">
+          <string>Transition Duration:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0">
+        <widget class="QLabel" name="label_7">
+         <property name="text">
+          <string>Video Layer:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="11" column="1">
+        <widget class="QLineEdit" name="transitionDurationEdit"/>
+       </item>
        <item row="1" column="0">
         <widget class="QLabel" name="label_5">
          <property name="text">
           <string>Rundown Location:</string>
          </property>
         </widget>
-       </item>
-       <item row="1" column="1">
-        <widget class="QLineEdit" name="ccgRundownLocationEdit"/>
-       </item>
-       <item row="0" column="1">
-        <widget class="QLineEdit" name="ccgServerNameEdit"/>
        </item>
        <item row="0" column="0">
         <widget class="QLabel" name="label_4">
@@ -94,7 +143,82 @@
          </property>
         </widget>
        </item>
+       <item row="9" column="1">
+        <widget class="QLineEdit" name="storyIdEdit"/>
+       </item>
+       <item row="6" column="1">
+        <widget class="QCheckBox" name="allowGpiCheck">
+         <property name="text">
+          <string>Allow GPI</string>
+         </property>
+        </widget>
+       </item>
+       <item row="10" column="0">
+        <widget class="QLabel" name="label_14">
+         <property name="text">
+          <string>Transition:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="12" column="0">
+        <widget class="QLabel" name="label_16">
+         <property name="text">
+          <string>Tween:</string>
+         </property>
+        </widget>
+       </item>
        <item row="2" column="1">
+        <widget class="QLineEdit" name="channelEdit"/>
+       </item>
+       <item row="12" column="1">
+        <widget class="QLineEdit" name="tweenEdit"/>
+       </item>
+       <item row="13" column="0">
+        <widget class="QLabel" name="label_17">
+         <property name="text">
+          <string>Direction:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="1">
+        <widget class="QCheckBox" name="remotetriggeringCheck">
+         <property name="text">
+          <string>Allow remote triggering</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="0">
+        <widget class="QLabel" name="label_8">
+         <property name="text">
+          <string>Delay:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="label_6">
+         <property name="text">
+          <string>Channel:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1">
+        <widget class="QLineEdit" name="videoLayerEdit"/>
+       </item>
+       <item row="9" column="0">
+        <widget class="QLabel" name="label_13">
+         <property name="text">
+          <string>Story ID:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="0">
+        <widget class="QLabel" name="label_9">
+         <property name="text">
+          <string>Duration:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="22" column="1">
         <spacer name="verticalSpacer_2">
          <property name="orientation">
           <enum>Qt::Vertical</enum>
@@ -106,6 +230,128 @@
           </size>
          </property>
         </spacer>
+       </item>
+       <item row="14" column="0">
+        <widget class="QLabel" name="label_18">
+         <property name="text">
+          <string>Seek:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="19" column="1">
+        <widget class="QCheckBox" name="useAutoCheck">
+         <property name="text">
+          <string>Use auto</string>
+         </property>
+        </widget>
+       </item>
+       <item row="14" column="1">
+        <widget class="QLineEdit" name="seekEdit"/>
+       </item>
+       <item row="20" column="1">
+        <widget class="QCheckBox" name="triggerOnNextCheck">
+         <property name="text">
+          <string>Trigger on next</string>
+         </property>
+        </widget>
+       </item>
+       <item row="15" column="0">
+        <widget class="QLabel" name="label_19">
+         <property name="text">
+          <string>Length:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="21" column="1">
+        <widget class="QLineEdit" name="colorEdit"/>
+       </item>
+       <item row="17" column="1">
+        <widget class="QCheckBox" name="freezeOnLoadCheck">
+         <property name="text">
+          <string>Freeze on load</string>
+         </property>
+        </widget>
+       </item>
+       <item row="21" column="0">
+        <widget class="QLabel" name="label_25">
+         <property name="text">
+          <string>Color:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="15" column="1">
+        <widget class="QLineEdit" name="lengthEdit"/>
+       </item>
+       <item row="16" column="1">
+        <widget class="QCheckBox" name="loopCheck">
+         <property name="text">
+          <string>Loop</string>
+         </property>
+        </widget>
+       </item>
+       <item row="18" column="1">
+        <widget class="QCheckBox" name="autoPlayCheck">
+         <property name="text">
+          <string>Auto play</string>
+         </property>
+        </widget>
+       </item>
+       <item row="8" column="1">
+        <layout class="QHBoxLayout" name="horizontalLayout">
+         <item>
+          <spacer name="horizontalSpacer">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_12">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="text">
+            <string>UID:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="remoteTriggeringId">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+             <horstretch>10</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="4" column="1">
+        <widget class="QLineEdit" name="delayEdit"/>
+       </item>
+       <item row="13" column="1">
+        <widget class="QComboBox" name="directionCombo">
+         <item>
+          <property name="text">
+           <string>RIGHT</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>LEFT</string>
+          </property>
+         </item>
+        </widget>
        </item>
       </layout>
      </widget>
@@ -123,6 +369,34 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>tabWidget</tabstop>
+  <tabstop>rcUrlEdit</tabstop>
+  <tabstop>rcApiKeyEdit</tabstop>
+  <tabstop>rcApiTokenEdit</tabstop>
+  <tabstop>ccgServerNameEdit</tabstop>
+  <tabstop>ccgRundownLocationEdit</tabstop>
+  <tabstop>channelEdit</tabstop>
+  <tabstop>videoLayerEdit</tabstop>
+  <tabstop>delayEdit</tabstop>
+  <tabstop>durationEdit</tabstop>
+  <tabstop>allowGpiCheck</tabstop>
+  <tabstop>remotetriggeringCheck</tabstop>
+  <tabstop>remoteTriggeringId</tabstop>
+  <tabstop>storyIdEdit</tabstop>
+  <tabstop>transitionCombo</tabstop>
+  <tabstop>transitionDurationEdit</tabstop>
+  <tabstop>tweenEdit</tabstop>
+  <tabstop>directionCombo</tabstop>
+  <tabstop>seekEdit</tabstop>
+  <tabstop>lengthEdit</tabstop>
+  <tabstop>loopCheck</tabstop>
+  <tabstop>freezeOnLoadCheck</tabstop>
+  <tabstop>autoPlayCheck</tabstop>
+  <tabstop>useAutoCheck</tabstop>
+  <tabstop>triggerOnNextCheck</tabstop>
+  <tabstop>colorEdit</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>
@@ -132,8 +406,8 @@
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>248</x>
-     <y>254</y>
+     <x>257</x>
+     <y>679</y>
     </hint>
     <hint type="destinationlabel">
      <x>157</x>
@@ -148,12 +422,44 @@
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>316</x>
-     <y>260</y>
+     <x>325</x>
+     <y>679</y>
     </hint>
     <hint type="destinationlabel">
      <x>286</x>
      <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>remotetriggeringCheck</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>remoteTriggeringId</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>236</x>
+     <y>245</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>202</x>
+     <y>271</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>remotetriggeringCheck</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>label_12</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>179</x>
+     <y>243</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>169</x>
+     <y>275</y>
     </hint>
    </hints>
   </connection>
