@@ -32,6 +32,8 @@ MainWindow::MainWindow(QWidget *parent) :
     m_rundownCreator->setApiUrl(settings.value("RundownCreator/Url").toString());
     m_rundownCreator->setApiKey(settings.value("RundownCreator/ApiKey").toString());
     m_rundownCreator->setApiToken(settings.value("RundownCreator/ApiToken").toString());
+
+    getRundowns();
 }
 
 MainWindow::~MainWindow()
@@ -124,5 +126,7 @@ void MainWindow::editSettings()
         m_rundownCreator->setApiUrl(settings.value("RundownCreator/Url").toString());
         m_rundownCreator->setApiKey(settings.value("RundownCreator/ApiKey").toString());
         m_rundownCreator->setApiToken(settings.value("RundownCreator/ApiToken").toString());
+
+        getRundowns();
     }
 }
