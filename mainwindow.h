@@ -28,6 +28,8 @@ private slots:
 
     void editSettings();
 
+    void showRundownCreatorError(const QString &errorString);
+
 private:
     Ui::MainWindow *ui;
 

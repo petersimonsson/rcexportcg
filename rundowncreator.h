@@ -50,6 +50,8 @@ private:
 signals:
     void rundownsReceived();
     void rowsReceived();
+
+    void error(const QString &errorString);
 };
 
 #endif // RUNDOWNCREATORFETCHER_H

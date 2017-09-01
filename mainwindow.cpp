@@ -10,6 +10,7 @@
 #include <QJsonDocument>
 #include <QFile>
 #include <QSettings>
+#include <QMessageBox>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -27,6 +28,7 @@ MainWindow::MainWindow(QWidget *parent) :
     m_rundownCreator = new RundownCreator(this);
     connect(m_rundownCreator, &RundownCreator::rundownsReceived, this, &MainWindow::updateRundowns);
     connect(m_rundownCreator, &RundownCreator::rowsReceived, this, &MainWindow::updateRows);
+    connect(m_rundownCreator, &RundownCreator::error, this, &MainWindow::showRundownCreatorError);
 
     QSettings settings;
     m_rundownCreator->setApiUrl(settings.value("RundownCreator/Url").toString());
@@ -129,4 +131,9 @@ void MainWindow::editSettings()
 
         getRundowns();
     }
+}
+
+void MainWindow::showRundownCreatorError(const QString &errorString)
+{
+    QMessageBox::warning(this, tr("RundownCreator Connection Error"), errorString);
 }

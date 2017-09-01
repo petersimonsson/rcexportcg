@@ -67,13 +67,31 @@ void RundownCreator::handleFinished(QNetworkReply *reply)
 {
     QString query = reply->url().query();
     QByteArray data = reply->readAll();
+    int status = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
 
-    if(query.contains("Action=getRundowns"))
-        handleRundowns(data);
-    else if (query.contains("Action=getRows"))
-        handleRows(data);
-    else
-        qDebug() << data;
+    switch(status)
+    {
+    case 200:
+        if(query.contains("Action=getRundowns"))
+            handleRundowns(data);
+        else if (query.contains("Action=getRows"))
+            handleRows(data);
+        else
+            qDebug() << data;
+        break;
+    case 400:
+        emit error(tr("Bad request: %1").arg(QString::fromUtf8(data)));
+        break;
+    case 401:
+        emit error(tr("Authentication failed!"));
+        break;
+    case 500:
+        emit error(tr("Internal server error."));
+        break;
+    default:
+        qDebug() << "Status:" << status << "Data:" << data;
+        break;
+    }
 
     reply->deleteLater();
 }
