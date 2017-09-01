@@ -126,7 +126,7 @@ void RundownCreator::handleRows(const QByteArray &data)
         {
             QJsonObject objectObject = objectValue.toObject();
             QJsonObject payloadObject = objectObject.value("Payload").toObject();
-            row->appendObject(objectObject.value("Type").toString(), payloadObject.value("value").toString());
+            row->appendObject(objectObject.value("Type").toString(), payloadObject.value("file").toString());
         }
 
         m_rowList.append(row);
