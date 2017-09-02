@@ -26,7 +26,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->actionSettings, &QAction::triggered, this, &MainWindow::editSettings);
 
     connect(ui->rundownRefreshButton, &QToolButton::clicked, this, &MainWindow::getRundowns);
-    connect(ui->fetchRundowButton, &QPushButton::clicked, this, &MainWindow::getRundownRows);
+    connect(ui->rundownCombo, &QComboBox::currentTextChanged, this, &MainWindow::getRundownRows);
     connect(ui->generateButton, &QPushButton::clicked, this, &MainWindow::generateCasparCG);
 
     m_statusLabel = new QLabel (ui->statusBar);
@@ -70,6 +70,8 @@ void MainWindow::getRundowns()
 
 void MainWindow::updateRundowns()
 {
+    QString oldSelection = ui->rundownCombo->currentText();
+    bool block = ui->rundownCombo->blockSignals(true);
     ui->rundownCombo->clear();
 
     foreach(Rundown *rundown, m_rundownCreator->rundownList())
@@ -79,6 +81,10 @@ void MainWindow::updateRundowns()
             ui->rundownCombo->addItem(rundown->title(), rundown->id());
         }
     }
+
+    ui->rundownCombo->blockSignals(block);
+    ui->rundownCombo->setCurrentText(oldSelection);
+    getRundownRows();
 }
 
 void MainWindow::getRundownRows()
