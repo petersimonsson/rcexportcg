@@ -10,7 +10,7 @@ class QNetworkAccessManager;
 class QNetworkReply;
 
 class Rundown;
-class RundownRow;
+class RundownRowModel;
 
 class RundownCreator : public QObject
 {
@@ -28,7 +28,7 @@ public:
     void fetchRows(quint32 rundownId);
 
     QList<Rundown*> rundownList() const { return m_rundownList; }
-    QList<RundownRow*> rowList() const { return m_rowList; }
+    RundownRowModel *rundownRowModel() const { return m_rundownRowModel; }
 
 private slots:
     void handleFinished(QNetworkReply *reply);
@@ -45,11 +45,10 @@ private:
     QNetworkAccessManager *m_netManager;
 
     QList<Rundown*> m_rundownList;
-    QList<RundownRow*> m_rowList;
+    RundownRowModel *m_rundownRowModel;
 
 signals:
     void rundownsReceived();
-    void rowsReceived();
 
     void error(const QString &errorString);
     void status(const QString &statusString);

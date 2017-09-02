@@ -1,14 +1,6 @@
 #include "rundownrow.h"
 
-RundownRow::RundownRow(quint32 rundownId, quint32 rowId) :
-    m_rundownId(rundownId), m_rowId(rowId)
+RundownRow::RundownRow(const QString &type, const QString &file) :
+    m_type(type), m_file(file), m_rundownId(0), m_rowId(0)
 {
-}
-
-void RundownRow::appendObject(const QString &type, const QString &file)
-{
-    Object object;
-    object.type = type;
-    object.file = file;
-    m_objects.append(object);
 }

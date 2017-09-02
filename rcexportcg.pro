@@ -29,7 +29,8 @@ SOURCES += \
     rundown.cpp \
     casparcggenerator.cpp \
     rundownrow.cpp \
-    settingsdialog.cpp
+    settingsdialog.cpp \
+    rundownrowmodel.cpp
 
 HEADERS += \
     mainwindow.h \
@@ -37,7 +38,8 @@ HEADERS += \
     rundown.h \
     casparcggenerator.h \
     rundownrow.h \
-    settingsdialog.h
+    settingsdialog.h \
+    rundownrowmodel.h
 
 FORMS += \
     mainwindow.ui \

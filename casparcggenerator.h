@@ -3,7 +3,7 @@
 
 #include <QObject>
 
-class RundownRow;
+class RundownRowModel;
 
 class QIODevice;
 
@@ -15,7 +15,7 @@ public:
 
     void setDevice (const QString &device) { m_deviceName = device; }
 
-    void convert(const QList<RundownRow*> &rowList, QIODevice *output);
+    void convert(RundownRowModel *rowModel, QIODevice *output);
 
     void setChannel(const QString &channel) { m_channel = channel; }
     void setVideoLayer(const QString &layer) { m_videoLayer = layer; }

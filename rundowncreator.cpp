@@ -1,6 +1,7 @@
 #include "rundowncreator.h"
 #include "rundown.h"
 #include "rundownrow.h"
+#include "rundownrowmodel.h"
 
 #include <QNetworkAccessManager>
 #include <QNetworkRequest>
@@ -15,14 +16,14 @@ RundownCreator::RundownCreator(QObject *parent) : QObject(parent)
     m_netManager = new QNetworkAccessManager(this);
 
     connect(m_netManager, &QNetworkAccessManager::finished, this, &RundownCreator::handleFinished);
+
+    m_rundownRowModel = new RundownRowModel(this);
 }
 
 RundownCreator::~RundownCreator()
 {
     qDeleteAll(m_rundownList);
     m_rundownList.clear();
-    qDeleteAll(m_rowList);
-    m_rowList.clear();
 }
 
 QUrlQuery RundownCreator::createRequestQuery(const QString &action, const QList<QPair<QString, QString> > &extraItems) const
@@ -127,9 +128,7 @@ void RundownCreator::handleRundowns(const QByteArray &data)
 
 void RundownCreator::handleRows(const QByteArray &data)
 {
-    // Remove the old list
-    qDeleteAll(m_rowList);
-    m_rowList.clear();
+    m_rundownRowModel->clear();
 
     QJsonDocument rowsDocument = QJsonDocument::fromJson(data);
 
@@ -138,20 +137,25 @@ void RundownCreator::handleRows(const QByteArray &data)
     foreach(const QJsonValue &value, array)
     {
         QJsonObject object = value.toObject();
-        RundownRow *row = new RundownRow(object.value("RundownID").toInt(),
-                                         object.value("RowID").toInt());
-        row->setPageNumber(object.value("PageNumber").toString());
-        row->setStorySlug(object.value("StorySlug").toString());
+        quint32 rundownId = object.value("RundownID").toInt();
+        quint32 rowId = object.value("RowID").toInt();
 
         foreach(const QJsonValue &objectValue, object.value("Objects").toArray())
         {
             QJsonObject objectObject = objectValue.toObject();
+            QString type = objectObject.value("Type").toString();
             QJsonObject payloadObject = objectObject.value("Payload").toObject();
-            row->appendObject(objectObject.value("Type").toString(), payloadObject.value("file").toString());
+            QString file = payloadObject.value("file").toString();
+
+            if(!file.isEmpty() && (type == "video" || type == "image"))
+            {
+                RundownRow *row = new RundownRow(type, file);
+                row->setRundownId(rundownId);
+                row->setRowId(rowId);
+                row->setPageNumber(object.value("PageNumber").toString());
+                row->setStorySlug(object.value("StorySlug").toString());
+                m_rundownRowModel->appendRow(row);
+            }
         }
-
-        m_rowList.append(row);
     }
-
-    emit rowsReceived();
 }

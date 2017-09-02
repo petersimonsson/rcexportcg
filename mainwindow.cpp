@@ -2,7 +2,7 @@
 #include "ui_mainwindow.h"
 #include "rundowncreator.h"
 #include "rundown.h"
-#include "rundownrow.h"
+#include "rundownrowmodel.h"
 #include "casparcggenerator.h"
 #include "settingsdialog.h"
 
@@ -32,9 +32,10 @@ MainWindow::MainWindow(QWidget *parent) :
 
     m_rundownCreator = new RundownCreator(this);
     connect(m_rundownCreator, &RundownCreator::rundownsReceived, this, &MainWindow::updateRundowns);
-    connect(m_rundownCreator, &RundownCreator::rowsReceived, this, &MainWindow::updateRows);
     connect(m_rundownCreator, &RundownCreator::error, this, &MainWindow::showRundownCreatorError);
     connect(m_rundownCreator, &RundownCreator::status, m_statusLabel, &QLabel::setText);
+
+    ui->rundownRowView->setModel(m_rundownCreator->rundownRowModel());
 
     QSettings settings;
     m_rundownCreator->setApiUrl(settings.value("RundownCreator/Url").toString());
@@ -78,21 +79,6 @@ void MainWindow::getRundownRows()
 
 void MainWindow::updateRows()
 {
-    QString text;
-
-    foreach(RundownRow *row, m_rundownCreator->rowList())
-    {
-        text += QString("RundowID: %1 RowID: %2 PageNumber: %3 StorySlug: %4\n").arg(QString::number(row->rundownId()), QString::number(row->rowId()),
-                                                                                     row->pageNumber(), row->storySlug());
-
-        foreach(const RundownRow::Object &object, row->objects())
-        {
-            text += QString("\tOBJECT = Type: %1 File: %2\n").arg(object.type, object.file);
-        }
-    }
-
-    ui->rowBrowser->clear();
-    ui->rowBrowser->setPlainText(text);
 }
 
 void MainWindow::generateCasparCG()
@@ -127,7 +113,7 @@ void MainWindow::generateCasparCG()
             generator->setUseAuto(settings.value("CasparCG/UseAuto", false).toBool());
             generator->setTriggerOnNext(settings.value("CasparCG/TriggerOnNext", false).toBool());
             generator->setColor(settings.value("CasparCG/Color", "Transparent").toString());
-            generator->convert(m_rundownCreator->rowList(), &file);
+            generator->convert(m_rundownCreator->rundownRowModel(), &file);
         }
     }
 }
