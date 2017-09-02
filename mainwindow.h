@@ -25,7 +25,6 @@ private slots:
 
     void updateRundowns();
     void getRundownRows();
-    void updateRows();
 
     void generateCasparCG();
 

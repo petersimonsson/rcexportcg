@@ -89,10 +89,6 @@ void MainWindow::getRundownRows()
     }
 }
 
-void MainWindow::updateRows()
-{
-}
-
 void MainWindow::generateCasparCG()
 {
     QSettings settings;
