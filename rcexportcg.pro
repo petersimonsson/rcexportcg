@@ -52,3 +52,6 @@ HEADERS += \
 FORMS += \
     mainwindow.ui \
     settingsdialog.ui
+
+RESOURCES += \
+    rcexportcg.qrc

@@ -1,6 +1,8 @@
 #include "rundownrowmodel.h"
 #include "rundownrow.h"
 
+#include <QIcon>
+
 RundownRowModel::RundownRowModel(QObject *parent) :
     QAbstractItemModel(parent)
 {
@@ -54,7 +56,7 @@ int RundownRowModel::columnCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent)
 
-    return 4;
+    return 3;
 }
 
 QVariant RundownRowModel::data(const QModelIndex &index, int role) const
@@ -74,11 +76,17 @@ QVariant RundownRowModel::data(const QModelIndex &index, int role) const
         case 1:
             return row->storySlug();
         case 2:
-            return row->type();
-        case 3:
             return row->file();
         }
         break;
+    case Qt::DecorationRole:
+        if(index.column() == 0)
+        {
+            if(row->type() == "video")
+                return QIcon(":/icons/Movie.png");
+            else if(row->type() == "image")
+                return QIcon(":/icons/Still.png");
+        }
     }
 
     return QVariant();
@@ -99,8 +107,6 @@ QVariant RundownRowModel::headerData(int section, Qt::Orientation orientation, i
         case 1:
             return tr("Story Slug");
         case 2:
-            return tr("Type");
-        case 3:
             return tr("File");
         }
     }
