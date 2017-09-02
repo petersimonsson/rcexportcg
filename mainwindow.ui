@@ -40,7 +40,11 @@
      </widget>
     </item>
     <item row="1" column="0" colspan="4">
-     <widget class="QTreeView" name="rundownRowView"/>
+     <widget class="QTreeView" name="rundownRowView">
+      <property name="alternatingRowColors">
+       <bool>true</bool>
+      </property>
+     </widget>
     </item>
     <item row="0" column="3">
      <widget class="QToolButton" name="rundownReloadButton">
