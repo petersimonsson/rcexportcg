@@ -25,7 +25,9 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->actionQuit, &QAction::triggered, QApplication::instance(), &QCoreApplication::quit);
     connect(ui->actionSettings, &QAction::triggered, this, &MainWindow::editSettings);
 
-    connect(ui->rundownRefreshButton, &QToolButton::clicked, this, &MainWindow::getRundowns);
+    ui->rundownReloadButton->setIcon(style()->standardIcon(QStyle::SP_BrowserReload));
+
+    connect(ui->rundownReloadButton, &QToolButton::clicked, this, &MainWindow::getRundowns);
     connect(ui->rundownCombo, &QComboBox::currentTextChanged, this, &MainWindow::getRundownRows);
     connect(ui->generateButton, &QPushButton::clicked, this, &MainWindow::generateCasparCG);
 
