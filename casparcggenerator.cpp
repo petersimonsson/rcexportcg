@@ -35,7 +35,7 @@ void CasparCGGenerator::convert(RundownRowModel *rowModel, QIODevice *output)
         writer.writeTextElement("type", translationHash.value(row->type()));
         writer.writeTextElement("devicename", m_deviceName);
         writer.writeTextElement("label", row->file());
-        writer.writeTextElement("name", row->file());
+        writer.writeTextElement("name", row->file().toUpper());
         writer.writeTextElement("channel", m_channel);
         writer.writeTextElement("videolayer", m_videoLayer);
         writer.writeTextElement("delay", m_delay);
