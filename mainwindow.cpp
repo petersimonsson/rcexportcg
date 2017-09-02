@@ -40,6 +40,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(m_rundownCreator, &RundownCreator::status, m_statusLabel, &QLabel::setText);
 
     ui->rundownRowView->setModel(m_rundownCreator->rundownRowModel());
+    ui->rundownRowView->header()->setSectionResizeMode(QHeaderView::ResizeToContents);
 
     m_videoMetadata = new CasparCGVideoMetaData;
     m_videoMetadata->readSettings();
