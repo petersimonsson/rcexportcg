@@ -1,5 +1,7 @@
 #include "settingsdialog.h"
 #include "ui_settingsdialog.h"
+#include "casparcgvideometadata.h"
+#include "casparcgstillmetadata.h"
 
 SettingsDialog::SettingsDialog(QWidget *parent) :
     QDialog(parent),
@@ -43,16 +45,6 @@ QString SettingsDialog::rundownCreatorApiToken() const
     return ui->rcApiTokenEdit->text();
 }
 
-void SettingsDialog::setCasparCGServerName(const QString &name)
-{
-    ui->ccgServerNameEdit->setText(name);
-}
-
-QString SettingsDialog::casparCGServerName() const
-{
-    return ui->ccgServerNameEdit->text();
-}
-
 void SettingsDialog::setCasparCGRundownLocation(const QString &location)
 {
     ui->ccgRundownLocationEdit->setText(location);
@@ -63,202 +55,90 @@ QString SettingsDialog::casparCGRundownLocation() const
     return ui->ccgRundownLocationEdit->text();
 }
 
-void SettingsDialog::setCasparCGChannel(const QString &channel)
+void SettingsDialog::setCasparCGVideoMetadata(const CasparCGVideoMetaData &metadata)
 {
-    ui->channelEdit->setText(channel);
+    ui->videoServerNameEdit->setText(metadata.serverName());
+    ui->videoChannelSpin->setValue(metadata.channel());
+    ui->videoVideoLayerSpin->setValue(metadata.videoLayer());
+    ui->videoDelaySpin->setValue(metadata.delay());
+    ui->videoDurationSpin->setValue(metadata.duration());
+    ui->videoAllowGpiCheck->setChecked(metadata.allowGpi());
+    ui->videoAllowRemotetriggeringCheck->setChecked(metadata.allowRemoteTriggering());
+    ui->videoRemoteTriggerIdEdit->setText(metadata.remoteTriggerId());
+    ui->videoTransitionCombo->setCurrentText(metadata.transition());
+    ui->videoTransitionDurationSpin->setValue(metadata.transitionDuration());
+    ui->videoTweenEdit->setText(metadata.tween());
+    ui->videoDirectionCombo->setCurrentText(metadata.direction());
+    ui->videoTriggerOnNextCheck->setChecked(metadata.triggerOnNext());
+    ui->videoSeekSpin->setValue(metadata.seek());
+    ui->videoLengthSpin->setValue(metadata.length());
+    ui->videoLoopCheck->setChecked(metadata.loop());
+    ui->videoFreezeOnLoadCheck->setChecked(metadata.freezeOnLoad());
+    ui->videoAutoPlayCheck->setChecked(metadata.autoPlay());
 }
 
-QString SettingsDialog::casparCGChannel() const
+CasparCGVideoMetaData SettingsDialog::casparCGVideoMetadata() const
 {
-    return ui->channelEdit->text();
+    CasparCGVideoMetaData metadata;
+
+    metadata.setServerName(ui->videoServerNameEdit->text());
+    metadata.setChannel(ui->videoChannelSpin->value());
+    metadata.setVideoLayer(ui->videoVideoLayerSpin->value());
+    metadata.setDelay(ui->videoDelaySpin->value());
+    metadata.setDuration(ui->videoDurationSpin->value());
+    metadata.setAllowGpi(ui->videoAllowGpiCheck->isChecked());
+    metadata.setAllowRemoteTriggering(ui->videoAllowRemotetriggeringCheck->isChecked());
+    metadata.setRemoteTriggerId(ui->videoRemoteTriggerIdEdit->text());
+    metadata.setTransition(ui->videoTransitionCombo->currentText());
+    metadata.setTransitionDuration(ui->videoTransitionDurationSpin->value());
+    metadata.setTween(ui->videoTweenEdit->text());
+    metadata.setDirection(ui->videoDirectionCombo->currentText());
+    metadata.setTriggerOnNext(ui->videoTriggerOnNextCheck->isChecked());
+    metadata.setSeek(ui->videoSeekSpin->value());
+    metadata.setLength(ui->videoLengthSpin->value());
+    metadata.setLoop(ui->videoLoopCheck->isChecked());
+    metadata.setFreezeOnLoad(ui->videoFreezeOnLoadCheck->isChecked());
+    metadata.setAutoPlay(ui->videoAutoPlayCheck->isChecked());
+
+    return metadata;
 }
 
-void SettingsDialog::setCasparCGVideoLayer(const QString &layer)
+void SettingsDialog::setCasparCGStillMetadata(const CasparCGStillMetaData &metadata)
 {
-    ui->videoLayerEdit->setText(layer);
+    ui->imageServerNameEdit->setText(metadata.serverName());
+    ui->imageChannelSpin->setValue(metadata.channel());
+    ui->imageVideoLayerSpin->setValue(metadata.videoLayer());
+    ui->imageDelaySpin->setValue(metadata.delay());
+    ui->imageDurationSpin->setValue(metadata.duration());
+    ui->imageAllowGpiCheck->setChecked(metadata.allowGpi());
+    ui->imageAllowRemotetriggeringCheck->setChecked(metadata.allowRemoteTriggering());
+    ui->imageRemoteTriggerIdEdit->setText(metadata.remoteTriggerId());
+    ui->imageTransitionCombo->setCurrentText(metadata.transition());
+    ui->imageTransitionDurationSpin->setValue(metadata.transitionDuration());
+    ui->imageTweenEdit->setText(metadata.tween());
+    ui->imageDirectionCombo->setCurrentText(metadata.direction());
+    ui->imageTriggerOnNextCheck->setChecked(metadata.triggerOnNext());
+    ui->imageUseAutoCheck->setChecked(metadata.useAuto());
 }
 
-QString SettingsDialog::casparCGVideoLayer() const
+CasparCGStillMetaData SettingsDialog::casparCGStillMetadata() const
 {
-    return ui->videoLayerEdit->text();
-}
+    CasparCGStillMetaData metadata;
 
-void SettingsDialog::setCasparCGDelay(const QString &delay)
-{
-    ui->delayEdit->setText(delay);
-}
+    metadata.setServerName(ui->imageServerNameEdit->text());
+    metadata.setChannel(ui->imageChannelSpin->value());
+    metadata.setVideoLayer(ui->imageVideoLayerSpin->value());
+    metadata.setDelay(ui->imageDelaySpin->value());
+    metadata.setDuration(ui->imageDurationSpin->value());
+    metadata.setAllowGpi(ui->imageAllowGpiCheck->isChecked());
+    metadata.setAllowRemoteTriggering(ui->imageAllowRemotetriggeringCheck->isChecked());
+    metadata.setRemoteTriggerId(ui->imageRemoteTriggerIdEdit->text());
+    metadata.setTransition(ui->imageTransitionCombo->currentText());
+    metadata.setTransitionDuration(ui->imageTransitionDurationSpin->value());
+    metadata.setTween(ui->imageTweenEdit->text());
+    metadata.setDirection(ui->imageDirectionCombo->currentText());
+    metadata.setTriggerOnNext(ui->imageTriggerOnNextCheck->isChecked());
+    metadata.setUseAuto(ui->imageUseAutoCheck->isChecked());
 
-QString SettingsDialog::casparCGDelay() const
-{
-    return ui->delayEdit->text();
-}
-
-void SettingsDialog::setCasparCGDuration(const QString &duration)
-{
-    ui->durationEdit->setText(duration);
-}
-
-QString SettingsDialog::casparCGDuration() const
-{
-    return ui->durationEdit->text();
-}
-
-void SettingsDialog::setCasparCGAllowGpi(bool allow)
-{
-    ui->allowGpiCheck->setChecked(allow);
-}
-
-bool SettingsDialog::casparCGAllowGpi() const
-{
-    return ui->allowGpiCheck->isChecked();
-}
-
-void SettingsDialog::setCasparCGAllowRemoteTriggering(bool allow)
-{
-    ui->remotetriggeringCheck->setChecked(allow);
-}
-
-bool SettingsDialog::casparCGAllowRemoteTriggering() const
-{
-    return ui->remotetriggeringCheck->isChecked();
-}
-
-void SettingsDialog::setCasparCGRemoteTriggerId(const QString &id)
-{
-    ui->remoteTriggeringId->setText(id);
-}
-
-QString SettingsDialog::casparCGRemoteTriggerId() const
-{
-    return ui->remoteTriggeringId->text();
-}
-
-void SettingsDialog::setCasparCGStoryId(const QString &id)
-{
-    ui->storyIdEdit->setText(id);
-}
-
-QString SettingsDialog::casparCGStoryId() const
-{
-    return ui->storyIdEdit->text();
-}
-
-void SettingsDialog::setCasparCGTransition(const QString &transition)
-{
-    ui->transitionCombo->setCurrentText(transition);
-}
-
-QString SettingsDialog::casparCGTransition() const
-{
-    return ui->transitionCombo->currentText();
-}
-
-void SettingsDialog::setCasparCGTransitionDuration(const QString &duration)
-{
-    ui->transitionDurationEdit->setText(duration);
-}
-
-QString SettingsDialog::casparCGTransitionDuration() const
-{
-    return ui->transitionDurationEdit->text();
-}
-
-void SettingsDialog::setCasparCGTween(const QString &tween)
-{
-    ui->tweenEdit->setText(tween);
-}
-
-QString SettingsDialog::casparCGTween() const
-{
-    return ui->tweenEdit->text();
-}
-
-void SettingsDialog::setCasparCGDirection(const QString &direction)
-{
-    ui->directionCombo->setCurrentText(direction);
-}
-
-QString SettingsDialog::casparCGDirection() const
-{
-    return ui->directionCombo->currentText();
-}
-
-void SettingsDialog::setCasparCGSeek(const QString &seek)
-{
-    ui->seekEdit->setText(seek);
-}
-
-QString SettingsDialog::casparCGSeek() const
-{
-    return ui->seekEdit->text();
-}
-
-void SettingsDialog::setCasparCGLength(const QString &length)
-{
-    ui->lengthEdit->setText(length);
-}
-
-QString SettingsDialog::casparCGLength() const
-{
-    return ui->lengthEdit->text();
-}
-
-void SettingsDialog::setCasparCGLoop(bool loop)
-{
-    ui->loopCheck->setChecked(loop);
-}
-
-bool SettingsDialog::casparCGLoop() const
-{
-    return ui->loopCheck->isChecked();
-}
-
-void SettingsDialog::setCasparCGFreezeOnLoad(bool freeze)
-{
-    ui->freezeOnLoadCheck->setChecked(freeze);
-}
-
-bool SettingsDialog::casparCGFreezeOnLoad() const
-{
-    return ui->freezeOnLoadCheck->isChecked();
-}
-
-void SettingsDialog::setCasparCGAutoPlay(bool aplay)
-{
-    ui->autoPlayCheck->setChecked(aplay);
-}
-
-bool SettingsDialog::casparCGAutoPlay() const
-{
-    return ui->autoPlayCheck->isChecked();
-}
-
-void SettingsDialog::setCasparCGUseAuto(bool useAuto)
-{
-    ui->useAutoCheck->setChecked(useAuto);
-}
-
-bool SettingsDialog::casparCGUseAuto() const
-{
-    return ui->useAutoCheck->isChecked();
-}
-
-void SettingsDialog::setCasparCGTriggerOnNext(bool trigger)
-{
-    ui->triggerOnNextCheck->setChecked(trigger);
-}
-
-bool SettingsDialog::casparCGTriggerOnNext() const
-{
-    return ui->triggerOnNextCheck->isChecked();
-}
-
-void SettingsDialog::setCasparCGColor(const QString &color)
-{
-    ui->colorEdit->setText(color);
-}
-
-QString SettingsDialog::casparCGColor() const
-{
-    return ui->colorEdit->text();
+    return metadata;
 }

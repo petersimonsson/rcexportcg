@@ -30,7 +30,11 @@ SOURCES += \
     casparcggenerator.cpp \
     rundownrow.cpp \
     settingsdialog.cpp \
-    rundownrowmodel.cpp
+    rundownrowmodel.cpp \
+    casparcgmetadata.cpp \
+    casparcgvideometadata.cpp \
+    casparcgmediametadata.cpp \
+    casparcgstillmetadata.cpp
 
 HEADERS += \
     mainwindow.h \
@@ -39,7 +43,11 @@ HEADERS += \
     casparcggenerator.h \
     rundownrow.h \
     settingsdialog.h \
-    rundownrowmodel.h
+    rundownrowmodel.h \
+    casparcgmetadata.h \
+    casparcgvideometadata.h \
+    casparcgmediametadata.h \
+    casparcgstillmetadata.h
 
 FORMS += \
     mainwindow.ui \

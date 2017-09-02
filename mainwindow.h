@@ -8,6 +8,8 @@ class MainWindow;
 }
 
 class RundownCreator;
+class CasparCGVideoMetaData;
+class CasparCGStillMetaData;
 class QLabel;
 
 class MainWindow : public QMainWindow
@@ -35,6 +37,9 @@ private:
     Ui::MainWindow *ui;
 
     RundownCreator *m_rundownCreator;
+
+    CasparCGVideoMetaData *m_videoMetadata;
+    CasparCGStillMetaData *m_stillMetadata;
 
     QLabel *m_statusLabel;
 };

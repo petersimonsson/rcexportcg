@@ -5,6 +5,8 @@
 #include "rundownrowmodel.h"
 #include "casparcggenerator.h"
 #include "settingsdialog.h"
+#include "casparcgvideometadata.h"
+#include "casparcgstillmetadata.h"
 
 #include <QDebug>
 #include <QJsonDocument>
@@ -37,6 +39,11 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->rundownRowView->setModel(m_rundownCreator->rundownRowModel());
 
+    m_videoMetadata = new CasparCGVideoMetaData;
+    m_videoMetadata->readSettings();
+    m_stillMetadata = new CasparCGStillMetaData;
+    m_stillMetadata->readSettings();
+
     QSettings settings;
     m_rundownCreator->setApiUrl(settings.value("RundownCreator/Url").toString());
     m_rundownCreator->setApiKey(settings.value("RundownCreator/ApiKey").toString());
@@ -48,6 +55,11 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
     delete ui;
+
+    m_videoMetadata->writeSettings();
+    delete m_videoMetadata;
+    m_stillMetadata->writeSettings();
+    delete m_stillMetadata;
 }
 
 void MainWindow::getRundowns()
@@ -92,27 +104,8 @@ void MainWindow::generateCasparCG()
         QFile file(filename);
         if(file.open(QFile::WriteOnly))
         {
-            generator->setDevice(settings.value("CasparCG/ServerName").toString());
-            generator->setChannel(settings.value("CasparCG/Channel", "1").toString());
-            generator->setVideoLayer(settings.value("CasparCG/VideoLayer", "10").toString());
-            generator->setDelay(settings.value("CasparCG/Delay", "0").toString());
-            generator->setDuration(settings.value("CasparCG/Duration", "0").toString());
-            generator->setAllowGpi(settings.value("CasparCG/AllowGPI", false).toBool());
-            generator->setAllowRemoteTriggering(settings.value("CasparCG/AllowRemoteTriggering", false).toBool());
-            generator->setRemoteTriggeringId(settings.value("CasparCG/RemoteTriggeringID", "").toString());
-            generator->setStoryId(settings.value("CasparCG/StoryID", "").toString());
-            generator->setTransition(settings.value("CasparCG/Transition", "CUT").toString());
-            generator->setTransitionDuration(settings.value("CasparCG/TransitionDuration", "1").toString());
-            generator->setTween(settings.value("CasparCG/Tween", "Linear").toString());
-            generator->setDirection(settings.value("CasparCG/Direction", "RIGHT").toString());
-            generator->setSeek(settings.value("CasparCG/Seek", "0").toString());
-            generator->setLength(settings.value("CasparCG/Length", "0").toString());
-            generator->setLoop(settings.value("CasparCG/Loop", false).toBool());
-            generator->setFreezeOnLoad(settings.value("CasparCG/FreezeOnLoad", false).toBool());
-            generator->setAutoPlay(settings.value("CasparCG/AutoPlay", false).toBool());
-            generator->setUseAuto(settings.value("CasparCG/UseAuto", false).toBool());
-            generator->setTriggerOnNext(settings.value("CasparCG/TriggerOnNext", false).toBool());
-            generator->setColor(settings.value("CasparCG/Color", "Transparent").toString());
+            generator->insertMetadata("video", m_videoMetadata);
+            generator->insertMetadata("image", m_stillMetadata);
             generator->convert(m_rundownCreator->rundownRowModel(), &file);
         }
     }
@@ -127,29 +120,10 @@ void MainWindow::editSettings()
     dialog->setRundownCreatorApiKey(settings.value("RundownCreator/ApiKey").toString());
     dialog->setRundownCreatorApiToken(settings.value("RundownCreator/ApiToken").toString());
 
-    dialog->setCasparCGServerName(settings.value("CasparCG/ServerName").toString());
     dialog->setCasparCGRundownLocation(settings.value("CasparCG/RundownLocation").toString());
 
-    dialog->setCasparCGChannel(settings.value("CasparCG/Channel", "1").toString());
-    dialog->setCasparCGVideoLayer(settings.value("CasparCG/VideoLayer", "10").toString());
-    dialog->setCasparCGDelay(settings.value("CasparCG/Delay", "0").toString());
-    dialog->setCasparCGDuration(settings.value("CasparCG/Duration", "0").toString());
-    dialog->setCasparCGAllowGpi(settings.value("CasparCG/AllowGPI", false).toBool());
-    dialog->setCasparCGAllowRemoteTriggering(settings.value("CasparCG/AllowRemoteTriggering", false).toBool());
-    dialog->setCasparCGRemoteTriggerId(settings.value("CasparCG/RemoteTriggeringID", "").toString());
-    dialog->setCasparCGStoryId(settings.value("CasparCG/StoryID", "").toString());
-    dialog->setCasparCGTransition(settings.value("CasparCG/Transition", "CUT").toString());
-    dialog->setCasparCGTransitionDuration(settings.value("CasparCG/TransitionDuration", "1").toString());
-    dialog->setCasparCGTween(settings.value("CasparCG/Tween", "Linear").toString());
-    dialog->setCasparCGDirection(settings.value("CasparCG/Direction", "RIGHT").toString());
-    dialog->setCasparCGSeek(settings.value("CasparCG/Seek", "0").toString());
-    dialog->setCasparCGLength(settings.value("CasparCG/Length", "0").toString());
-    dialog->setCasparCGLoop(settings.value("CasparCG/Loop", false).toBool());
-    dialog->setCasparCGFreezeOnLoad(settings.value("CasparCG/FreezeOnLoad", false).toBool());
-    dialog->setCasparCGAutoPlay(settings.value("CasparCG/AutoPlay", false).toBool());
-    dialog->setCasparCGUseAuto(settings.value("CasparCG/UseAuto", false).toBool());
-    dialog->setCasparCGTriggerOnNext(settings.value("CasparCG/TriggerOnNext", false).toBool());
-    dialog->setCasparCGColor(settings.value("CasparCG/Color", "Transparent").toString());
+    dialog->setCasparCGVideoMetadata(*m_videoMetadata);
+    dialog->setCasparCGStillMetadata(*m_stillMetadata);
 
     if(dialog->exec() == QDialog::Accepted)
     {
@@ -157,29 +131,12 @@ void MainWindow::editSettings()
         settings.setValue("RundownCreator/ApiKey", dialog->rundownCreatorApiKey());
         settings.setValue("RundownCreator/ApiToken", dialog->rundownCreatorApiToken());
 
-        settings.setValue("CasparCG/ServerName", dialog->casparCGServerName());
         settings.setValue("CasparCG/RundownLocation", dialog->casparCGRundownLocation());
 
-        settings.setValue("CasparCG/Channel", dialog->casparCGChannel());
-        settings.setValue("CasparCG/VideoLayer", dialog->casparCGVideoLayer());
-        settings.setValue("CasparCG/Delay", dialog->casparCGDelay());
-        settings.setValue("CasparCG/Duration", dialog->casparCGDuration());
-        settings.setValue("CasparCG/AllowGPI", dialog->casparCGAllowGpi());
-        settings.setValue("CasparCG/AllowRemoteTriggering", dialog->casparCGAllowRemoteTriggering());
-        settings.setValue("CasparCG/RemoteTriggeringID", dialog->casparCGRemoteTriggerId());
-        settings.setValue("CasparCG/StoryID", dialog->casparCGStoryId());
-        settings.setValue("CasparCG/Transition", dialog->casparCGTransition());
-        settings.setValue("CasparCG/TransitionDuration", dialog->casparCGTransitionDuration());
-        settings.setValue("CasparCG/Tween", dialog->casparCGTween());
-        settings.setValue("CasparCG/Direction", dialog->casparCGDirection());
-        settings.setValue("CasparCG/Seek", dialog->casparCGSeek());
-        settings.setValue("CasparCG/Length", dialog->casparCGLength());
-        settings.setValue("CasparCG/Loop", dialog->casparCGLoop());
-        settings.setValue("CasparCG/FreezeOnLoad", dialog->casparCGFreezeOnLoad());
-        settings.setValue("CasparCG/AutoPlay", dialog->casparCGAutoPlay());
-        settings.setValue("CasparCG/UseAuto", dialog->casparCGUseAuto());
-        settings.setValue("CasparCG/TriggerOnNext", dialog->casparCGTriggerOnNext());
-        settings.setValue("CasparCG/Color", dialog->casparCGColor());
+        *m_videoMetadata = dialog->casparCGVideoMetadata();
+        m_videoMetadata->writeSettings();
+        *m_stillMetadata = dialog->casparCGStillMetadata();
+        m_stillMetadata->writeSettings();
 
         m_rundownCreator->setApiUrl(settings.value("RundownCreator/Url").toString());
         m_rundownCreator->setApiKey(settings.value("RundownCreator/ApiKey").toString());
