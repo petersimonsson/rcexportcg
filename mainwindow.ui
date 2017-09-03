@@ -79,6 +79,8 @@
      <string>Presets</string>
     </property>
     <addaction name="actionReload"/>
+    <addaction name="separator"/>
+    <addaction name="actionOpen_Presets_Folder"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuPresets"/>
@@ -111,6 +113,11 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+R</string>
+   </property>
+  </action>
+  <action name="actionOpen_Presets_Folder">
+   <property name="text">
+    <string>Open Presets Folder</string>
    </property>
   </action>
  </widget>

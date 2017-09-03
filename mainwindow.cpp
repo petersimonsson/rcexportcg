@@ -30,6 +30,8 @@
 #include <QMessageBox>
 #include <QScopedPointer>
 #include <QLabel>
+#include <QDesktopServices>
+#include <QDir>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -61,6 +63,7 @@ MainWindow::MainWindow(QWidget *parent) :
     m_presetStore->loadPresets();
 
     connect(ui->actionReload, &QAction::triggered, m_presetStore, &PresetStore::loadPresets);
+    connect(ui->actionOpen_Presets_Folder, &QAction::triggered, this, &MainWindow::openPresetFolder);
 
     QSettings settings;
     m_rundownCreator->setApiUrl(settings.value("RundownCreator/Url").toString());
@@ -157,4 +160,10 @@ void MainWindow::editSettings()
 void MainWindow::showRundownCreatorError(const QString &errorString)
 {
     QMessageBox::warning(this, tr("RundownCreator Connection Error"), errorString);
+}
+
+void MainWindow::openPresetFolder()
+{
+    QString path = QDir::homePath() + "/.rcexportcg/presets";
+    QDesktopServices::openUrl(QUrl::fromLocalFile(path));
 }
