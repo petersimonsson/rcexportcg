@@ -111,6 +111,10 @@
             <property name="text">
              <string>Remove</string>
             </property>
+            <property name="icon">
+             <iconset resource="rcexportcg.qrc">
+              <normaloff>:/icons/remove.png</normaloff>:/icons/remove.png</iconset>
+            </property>
             <property name="autoRaise">
              <bool>true</bool>
             </property>
@@ -123,6 +127,10 @@
             </property>
             <property name="text">
              <string>Add</string>
+            </property>
+            <property name="icon">
+             <iconset resource="rcexportcg.qrc">
+              <normaloff>:/icons/add.png</normaloff>:/icons/add.png</iconset>
             </property>
             <property name="autoRaise">
              <bool>true</bool>
@@ -159,7 +167,9 @@
   <tabstop>rcApiKeyEdit</tabstop>
   <tabstop>rcApiTokenEdit</tabstop>
  </tabstops>
- <resources/>
+ <resources>
+  <include location="rcexportcg.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>buttonBox</sender>
