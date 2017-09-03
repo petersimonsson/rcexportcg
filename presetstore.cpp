@@ -134,6 +134,9 @@ void PresetStore::generateCasparCG(RundownRowModel *rowModel, QIODevice *output)
     {
         QString presetName = m_defaultPresets.value(row->type());
 
+        if(!row->attributes().value("preset").toString().isEmpty())
+            presetName = row->attributes().value("preset").toString();
+
         QString data = createObject(presetName, row->attributes());
         output->write(data.toUtf8());
     }
