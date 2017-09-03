@@ -60,6 +60,8 @@ MainWindow::MainWindow(QWidget *parent) :
     m_presetStore = new PresetStore(this);
     m_presetStore->loadPresets();
 
+    connect(ui->actionReload, &QAction::triggered, m_presetStore, &PresetStore::loadPresets);
+
     QSettings settings;
     m_rundownCreator->setApiUrl(settings.value("RundownCreator/Url").toString());
     m_rundownCreator->setApiKey(settings.value("RundownCreator/ApiKey").toString());

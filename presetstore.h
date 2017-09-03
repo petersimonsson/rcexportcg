@@ -33,12 +33,13 @@ public:
     explicit PresetStore(QObject *parent = nullptr);
     ~PresetStore();
 
-    void loadPresets();
-
     void generateCasparCG(RundownRowModel *rowModel, QIODevice *output);
 
     void setDefaultPresets(const QHash<QString, QString> &defaults) { m_defaultPresets = defaults; }
     QHash<QString, QString> defaultPresets() const { return m_defaultPresets; }
+
+public slots:
+    void loadPresets();
 
 protected:
     void clear();
