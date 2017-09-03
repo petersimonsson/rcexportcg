@@ -69,8 +69,9 @@ void PresetStore::loadPresets()
     QDir presetDir(QDir::homePath() + "/.rcexportcg/presets");
     presetDir.setNameFilters(QStringList() << "*.xml");
 
+    // if the preset dir does not exist create it
     if(!presetDir.exists())
-        return;
+        presetDir.mkdir(presetDir.absolutePath());
 
     foreach(const QString &filename, presetDir.entryList())
     {
