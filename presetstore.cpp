@@ -17,17 +17,42 @@
 **************************************************************************/
 #include "presetstore.h"
 #include "preset.h"
+#include "rundownrowmodel.h"
+#include "rundownrow.h"
 
 #include <QDir>
 #include <QFile>
 #include <QDebug>
+#include <QXmlStreamWriter>
+#include <QIODevice>
+#include <QSettings>
 
 PresetStore::PresetStore(QObject *parent) : QObject(parent)
 {
+    QSettings settings;
+    settings.beginGroup("CasparCG/DefaultPresets");
+
+    foreach(const QString &key, settings.childKeys())
+    {
+        m_defaultPresets.insert(key, settings.value(key).toString());
+    }
+
+    settings.endGroup();
 }
 
 PresetStore::~PresetStore()
 {
+    QSettings settings;
+    settings.beginGroup("CasparCG/DefaultPresets");
+
+    QHash<QString, QString>::iterator it = m_defaultPresets.begin();
+    for(; it != m_defaultPresets.end(); ++it)
+    {
+        settings.setValue(it.key(), it.value());
+    }
+
+    settings.endGroup();
+
     clear();
 }
 
@@ -92,4 +117,27 @@ QString PresetStore::createObject(const QString &presetName, const QVariantHash 
     }
 
     return data;
+}
+
+void PresetStore::generateCasparCG(RundownRowModel *rowModel, QIODevice *output)
+{
+    QXmlStreamWriter writer;
+    writer.setAutoFormatting(true);
+
+    writer.setDevice(output);
+
+    writer.writeStartDocument();
+    writer.writeStartElement("items");
+    writer.writeTextElement("allowremotetriggering", "false");
+
+    foreach(RundownRow *row, rowModel->rowList())
+    {
+        QString presetName = m_defaultPresets.value(row->type());
+
+        QString data = createObject(presetName, row->attributes());
+        output->write(data.toUtf8());
+    }
+
+    writer.writeEndElement();
+    writer.writeEndDocument();
 }

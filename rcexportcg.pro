@@ -27,23 +27,23 @@ SOURCES += \
     mainwindow.cpp \
     rundowncreator.cpp \
     rundown.cpp \
-    casparcggenerator.cpp \
     rundownrow.cpp \
     settingsdialog.cpp \
     rundownrowmodel.cpp \
     preset.cpp \
-    presetstore.cpp
+    presetstore.cpp \
+    settingsmodel.cpp
 
 HEADERS += \
     mainwindow.h \
     rundowncreator.h \
     rundown.h \
-    casparcggenerator.h \
     rundownrow.h \
     settingsdialog.h \
     rundownrowmodel.h \
     preset.h \
-    presetstore.h
+    presetstore.h \
+    settingsmodel.h
 
 FORMS += \
     mainwindow.ui \

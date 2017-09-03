@@ -20,7 +20,6 @@
 #include "rundowncreator.h"
 #include "rundown.h"
 #include "rundownrowmodel.h"
-#include "casparcggenerator.h"
 #include "settingsdialog.h"
 #include "presetstore.h"
 
@@ -114,11 +113,10 @@ void MainWindow::generateCasparCG()
 
     if(!filename.isEmpty())
     {
-        QScopedPointer<CasparCGGenerator> generator(new CasparCGGenerator(this));
         QFile file(filename);
         if(file.open(QFile::WriteOnly))
         {
-            generator->convert(m_rundownCreator->rundownRowModel(), &file, m_presetStore);
+            m_presetStore->generateCasparCG(m_rundownCreator->rundownRowModel(), &file);
         }
     }
 }
@@ -134,6 +132,8 @@ void MainWindow::editSettings()
 
     dialog->setCasparCGRundownLocation(settings.value("CasparCG/RundownLocation").toString());
 
+    dialog->setObjectPresets(m_presetStore->defaultPresets());
+
     if(dialog->exec() == QDialog::Accepted)
     {
         settings.setValue("RundownCreator/Url", dialog->rundownCreatorUrl());
@@ -141,6 +141,8 @@ void MainWindow::editSettings()
         settings.setValue("RundownCreator/ApiToken", dialog->rundownCreatorApiToken());
 
         settings.setValue("CasparCG/RundownLocation", dialog->casparCGRundownLocation());
+
+        m_presetStore->setDefaultPresets(dialog->objectPresets());
 
         m_rundownCreator->setApiUrl(settings.value("RundownCreator/Url").toString());
         m_rundownCreator->setApiKey(settings.value("RundownCreator/ApiKey").toString());

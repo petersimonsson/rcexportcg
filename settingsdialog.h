@@ -19,10 +19,14 @@
 #define SETTINGSDIALOG_H
 
 #include <QDialog>
+#include <QString>
+#include <QHash>
 
 namespace Ui {
 class SettingsDialog;
 }
+
+class SettingsModel;
 
 class SettingsDialog : public QDialog
 {
@@ -42,8 +46,17 @@ public:
     void setCasparCGRundownLocation(const QString &location);
     QString casparCGRundownLocation() const;
 
+    void setObjectPresets(const QHash<QString, QString> &presets);
+    QHash<QString, QString> objectPresets() const;
+
+private slots:
+    void addObject();
+    void removeObject();
+
 private:
     Ui::SettingsDialog *ui;
+
+    SettingsModel *m_objectModel;
 };
 
 #endif // SETTINGSDIALOG_H

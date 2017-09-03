@@ -22,6 +22,9 @@
 #include <QHash>
 
 class Preset;
+class RundownRowModel;
+
+class QIODevice;
 
 class PresetStore : public QObject
 {
@@ -32,13 +35,19 @@ public:
 
     void loadPresets();
 
-    QString createObject(const QString &presetName, const QVariantHash &attributes);
+    void generateCasparCG(RundownRowModel *rowModel, QIODevice *output);
+
+    void setDefaultPresets(const QHash<QString, QString> &defaults) { m_defaultPresets = defaults; }
+    QHash<QString, QString> defaultPresets() const { return m_defaultPresets; }
 
 protected:
     void clear();
 
+    QString createObject(const QString &presetName, const QVariantHash &attributes);
+
 private:
     QHash<QString, Preset*> m_presets;
+    QHash<QString, QString> m_defaultPresets;
 };
 
 #endif // PRESETSTORE_H

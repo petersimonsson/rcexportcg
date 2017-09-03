@@ -17,12 +17,19 @@
 **************************************************************************/
 #include "settingsdialog.h"
 #include "ui_settingsdialog.h"
+#include "settingsmodel.h"
 
 SettingsDialog::SettingsDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::SettingsDialog)
 {
     ui->setupUi(this);
+
+    m_objectModel = new SettingsModel(this);
+    ui->objectView->setModel(m_objectModel);
+
+    connect(ui->addObjectButton, &QToolButton::clicked, this, &SettingsDialog::addObject);
+    connect(ui->removeObjectButton, &QToolButton::clicked, this, &SettingsDialog::removeObject);
 }
 
 SettingsDialog::~SettingsDialog()
@@ -68,4 +75,47 @@ void SettingsDialog::setCasparCGRundownLocation(const QString &location)
 QString SettingsDialog::casparCGRundownLocation() const
 {
     return ui->ccgRundownLocationEdit->text();
+}
+
+void SettingsDialog::setObjectPresets(const QHash<QString, QString> &presets)
+{
+    QHash<QString, QString>::const_iterator it = presets.begin();
+
+    for(; it != presets.end(); ++it)
+    {
+        SettingsModelItem *item = new SettingsModelItem;
+        item->setObject(it.key());
+        item->setPreset(it.value());
+        m_objectModel->append(item);
+    }
+}
+
+QHash<QString, QString> SettingsDialog::objectPresets() const
+{
+    QHash<QString, QString> presets;
+
+    foreach(SettingsModelItem *item, m_objectModel->items())
+    {
+        presets.insert(item->object(), item->preset());
+    }
+
+    return presets;
+}
+
+void SettingsDialog::addObject()
+{
+    SettingsModelItem *item = new SettingsModelItem;
+    item->setObject("object");
+    item->setPreset("preset");
+    QModelIndex index = m_objectModel->append(item);
+
+    ui->objectView->edit(index);
+}
+
+void SettingsDialog::removeObject()
+{
+    QItemSelectionModel *selectionModel = ui->objectView->selectionModel();
+
+    QModelIndex index = selectionModel->selectedIndexes().first();
+    m_objectModel->removeRow(index.row());
 }
