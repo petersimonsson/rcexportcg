@@ -162,18 +162,13 @@ void RundownCreator::handleRows(const QByteArray &data)
             QJsonObject objectObject = objectValue.toObject();
             QString type = objectObject.value("Type").toString();
             QJsonObject payloadObject = objectObject.value("Payload").toObject();
-            QString file = payloadObject.value("file").toString();
-
-            if(!file.isEmpty() && (type == "video" || type == "image"))
-            {
-                RundownRow *row = new RundownRow(type, file);
-                row->setRundownId(rundownId);
-                row->setRowId(rowId);
-                row->setPageNumber(object.value("PageNumber").toString());
-                row->setStorySlug(object.value("StorySlug").toString());
-                row->setAttributes(payloadObject.toVariantHash());
-                m_rundownRowModel->appendRow(row);
-            }
+            RundownRow *row = new RundownRow(type);
+            row->setRundownId(rundownId);
+            row->setRowId(rowId);
+            row->setPageNumber(object.value("PageNumber").toString());
+            row->setStorySlug(object.value("StorySlug").toString());
+            row->setAttributes(payloadObject.toVariantHash());
+            m_rundownRowModel->appendRow(row);
         }
     }
 }

@@ -24,10 +24,9 @@
 class RundownRow
 {
 public:
-    RundownRow(const QString &type, const QString &file);
+    RundownRow(const QString &type);
 
     QString type() const { return m_type; }
-    QString file() const { return m_file; }
 
     void setRundownId(quint32 id) { m_rundownId = id; }
     quint32 rundownId() const { return m_rundownId; }
@@ -45,7 +44,6 @@ public:
 
 private:
     QString m_type;
-    QString m_file;
 
     quint32 m_rundownId;
     quint32 m_rowId;

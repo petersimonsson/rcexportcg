@@ -93,7 +93,7 @@ QVariant RundownRowModel::data(const QModelIndex &index, int role) const
         case 1:
             return row->storySlug();
         case 2:
-            return row->file();
+            return row->attributes().value("file").toString();
         }
         break;
     case Qt::DecorationRole:
