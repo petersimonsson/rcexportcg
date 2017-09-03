@@ -18,7 +18,6 @@
 #include "casparcggenerator.h"
 #include "rundownrow.h"
 #include "rundownrowmodel.h"
-#include "casparcgmetadata.h"
 #include "presetstore.h"
 
 #include <QJsonDocument>

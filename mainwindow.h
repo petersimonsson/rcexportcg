@@ -56,9 +56,6 @@ private:
 
     RundownCreator *m_rundownCreator;
 
-    CasparCGVideoMetaData *m_videoMetadata;
-    CasparCGStillMetaData *m_stillMetadata;
-
     QLabel *m_statusLabel;
 
     PresetStore *m_presetStore;

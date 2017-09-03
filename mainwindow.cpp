@@ -22,8 +22,6 @@
 #include "rundownrowmodel.h"
 #include "casparcggenerator.h"
 #include "settingsdialog.h"
-#include "casparcgvideometadata.h"
-#include "casparcgstillmetadata.h"
 #include "presetstore.h"
 
 #include <QDebug>
@@ -60,11 +58,6 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->rundownRowView->setModel(m_rundownCreator->rundownRowModel());
     ui->rundownRowView->header()->setSectionResizeMode(QHeaderView::ResizeToContents);
 
-    m_videoMetadata = new CasparCGVideoMetaData;
-    m_videoMetadata->readSettings();
-    m_stillMetadata = new CasparCGStillMetaData;
-    m_stillMetadata->readSettings();
-
     m_presetStore = new PresetStore(this);
     m_presetStore->loadPresets();
 
@@ -79,11 +72,6 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
     delete ui;
-
-    m_videoMetadata->writeSettings();
-    delete m_videoMetadata;
-    m_stillMetadata->writeSettings();
-    delete m_stillMetadata;
 }
 
 void MainWindow::getRundowns()
@@ -130,8 +118,6 @@ void MainWindow::generateCasparCG()
         QFile file(filename);
         if(file.open(QFile::WriteOnly))
         {
-            generator->insertMetadata("video", m_videoMetadata);
-            generator->insertMetadata("image", m_stillMetadata);
             generator->convert(m_rundownCreator->rundownRowModel(), &file, m_presetStore);
         }
     }
@@ -148,9 +134,6 @@ void MainWindow::editSettings()
 
     dialog->setCasparCGRundownLocation(settings.value("CasparCG/RundownLocation").toString());
 
-    dialog->setCasparCGVideoMetadata(*m_videoMetadata);
-    dialog->setCasparCGStillMetadata(*m_stillMetadata);
-
     if(dialog->exec() == QDialog::Accepted)
     {
         settings.setValue("RundownCreator/Url", dialog->rundownCreatorUrl());
@@ -158,11 +141,6 @@ void MainWindow::editSettings()
         settings.setValue("RundownCreator/ApiToken", dialog->rundownCreatorApiToken());
 
         settings.setValue("CasparCG/RundownLocation", dialog->casparCGRundownLocation());
-
-        *m_videoMetadata = dialog->casparCGVideoMetadata();
-        m_videoMetadata->writeSettings();
-        *m_stillMetadata = dialog->casparCGStillMetadata();
-        m_stillMetadata->writeSettings();
 
         m_rundownCreator->setApiUrl(settings.value("RundownCreator/Url").toString());
         m_rundownCreator->setApiKey(settings.value("RundownCreator/ApiKey").toString());

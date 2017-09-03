@@ -22,7 +22,6 @@
 #include <QHash>
 
 class RundownRowModel;
-class CasparCGMetaData;
 class PresetStore;
 
 class QIODevice;
@@ -34,11 +33,6 @@ public:
     explicit CasparCGGenerator(QObject *parent = nullptr);
 
     void convert(RundownRowModel *rowModel, QIODevice *output, PresetStore *presetStore);
-
-    void insertMetadata(const QString &type, CasparCGMetaData *metadata) { m_metadata.insert(type, metadata); }
-
-private:
-    QHash<QString, CasparCGMetaData*> m_metadata;
 };
 
 #endif // CASPARCGGENERATOR_H
