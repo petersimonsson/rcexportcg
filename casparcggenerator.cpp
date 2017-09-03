@@ -19,6 +19,7 @@
 #include "rundownrow.h"
 #include "rundownrowmodel.h"
 #include "casparcgmetadata.h"
+#include "presetstore.h"
 
 #include <QJsonDocument>
 #include <QJsonArray>
@@ -32,7 +33,7 @@ CasparCGGenerator::CasparCGGenerator(QObject *parent) : QObject(parent)
 
 }
 
-void CasparCGGenerator::convert(RundownRowModel *rowModel, QIODevice *output)
+void CasparCGGenerator::convert(RundownRowModel *rowModel, QIODevice *output, PresetStore *presetStore)
 {
     QXmlStreamWriter writer;
     writer.setAutoFormatting(true);
@@ -45,12 +46,15 @@ void CasparCGGenerator::convert(RundownRowModel *rowModel, QIODevice *output)
 
     foreach(RundownRow *row, rowModel->rowList())
     {
-        CasparCGMetaData *metadata = m_metadata.value(row->type());
+        QString presetName;
 
-        if(metadata)
-        {
-            metadata->createItem(&writer, row->file(), row->file().toUpper());
-        }
+        if(row->type() == "video")
+            presetName = "Video";
+        else
+            presetName = "Still";
+
+        QString data = presetStore->createObject(presetName, row->attributes());
+        output->write(data.toUtf8());
     }
 
     writer.writeEndElement();

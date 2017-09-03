@@ -23,6 +23,7 @@
 
 class RundownRowModel;
 class CasparCGMetaData;
+class PresetStore;
 
 class QIODevice;
 
@@ -32,7 +33,7 @@ class CasparCGGenerator : public QObject
 public:
     explicit CasparCGGenerator(QObject *parent = nullptr);
 
-    void convert(RundownRowModel *rowModel, QIODevice *output);
+    void convert(RundownRowModel *rowModel, QIODevice *output, PresetStore *presetStore);
 
     void insertMetadata(const QString &type, CasparCGMetaData *metadata) { m_metadata.insert(type, metadata); }
 

@@ -132,7 +132,7 @@ void MainWindow::generateCasparCG()
         {
             generator->insertMetadata("video", m_videoMetadata);
             generator->insertMetadata("image", m_stillMetadata);
-            generator->convert(m_rundownCreator->rundownRowModel(), &file);
+            generator->convert(m_rundownCreator->rundownRowModel(), &file, m_presetStore);
         }
     }
 }
