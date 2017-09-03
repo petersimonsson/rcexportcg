@@ -15,53 +15,30 @@
   You should have received a copy of the GNU General Public License
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **************************************************************************/
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#ifndef PRESETSTORE_H
+#define PRESETSTORE_H
 
-#include <QMainWindow>
+#include <QObject>
+#include <QHash>
 
-namespace Ui {
-class MainWindow;
-}
+class Preset;
 
-class RundownCreator;
-class CasparCGVideoMetaData;
-class CasparCGStillMetaData;
-class PresetStore;
-
-class QLabel;
-
-class MainWindow : public QMainWindow
+class PresetStore : public QObject
 {
     Q_OBJECT
-
 public:
-    explicit MainWindow(QWidget *parent = 0);
-    ~MainWindow();
+    explicit PresetStore(QObject *parent = nullptr);
+    ~PresetStore();
 
-private slots:
-    void getRundowns();
+    void loadPresets();
 
-    void updateRundowns();
-    void getRundownRows();
+    QString createObject(const QString &presetName, const QHash<QString, QString> &attributes);
 
-    void generateCasparCG();
-
-    void editSettings();
-
-    void showRundownCreatorError(const QString &errorString);
+protected:
+    void clear();
 
 private:
-    Ui::MainWindow *ui;
-
-    RundownCreator *m_rundownCreator;
-
-    CasparCGVideoMetaData *m_videoMetadata;
-    CasparCGStillMetaData *m_stillMetadata;
-
-    QLabel *m_statusLabel;
-
-    PresetStore *m_presetStore;
+    QHash<QString, Preset*> m_presets;
 };
 
-#endif // MAINWINDOW_H
+#endif // PRESETSTORE_H

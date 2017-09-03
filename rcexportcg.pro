@@ -34,7 +34,9 @@ SOURCES += \
     casparcgmetadata.cpp \
     casparcgvideometadata.cpp \
     casparcgmediametadata.cpp \
-    casparcgstillmetadata.cpp
+    casparcgstillmetadata.cpp \
+    preset.cpp \
+    presetstore.cpp
 
 HEADERS += \
     mainwindow.h \
@@ -47,7 +49,9 @@ HEADERS += \
     casparcgmetadata.h \
     casparcgvideometadata.h \
     casparcgmediametadata.h \
-    casparcgstillmetadata.h
+    casparcgstillmetadata.h \
+    preset.h \
+    presetstore.h
 
 FORMS += \
     mainwindow.ui \

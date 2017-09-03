@@ -24,6 +24,7 @@
 #include "settingsdialog.h"
 #include "casparcgvideometadata.h"
 #include "casparcgstillmetadata.h"
+#include "presetstore.h"
 
 #include <QDebug>
 #include <QJsonDocument>
@@ -63,6 +64,9 @@ MainWindow::MainWindow(QWidget *parent) :
     m_videoMetadata->readSettings();
     m_stillMetadata = new CasparCGStillMetaData;
     m_stillMetadata->readSettings();
+
+    m_presetStore = new PresetStore(this);
+    m_presetStore->loadPresets();
 
     QSettings settings;
     m_rundownCreator->setApiUrl(settings.value("RundownCreator/Url").toString());
