@@ -19,7 +19,7 @@
 #define RUNDOWNROW_H
 
 #include <QString>
-#include <QList>
+#include <QVariantHash>
 
 class RundownRow
 {
@@ -40,6 +40,9 @@ public:
     void setStorySlug(const QString &slug) { m_storySlug = slug; }
     QString storySlug () const { return m_storySlug; }
 
+    void setAttributes(const QVariantHash &attributes) { m_attributes = attributes; }
+    QVariantHash attributes() const { return m_attributes; }
+
 private:
     QString m_type;
     QString m_file;
@@ -48,6 +51,8 @@ private:
     quint32 m_rowId;
     QString m_pageNumber;
     QString m_storySlug;
+
+    QVariantHash m_attributes;
 };
 
 #endif // RUNDOWNROW_H

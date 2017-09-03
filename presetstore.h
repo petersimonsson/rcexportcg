@@ -32,7 +32,7 @@ public:
 
     void loadPresets();
 
-    QString createObject(const QString &presetName, const QHash<QString, QString> &attributes);
+    QString createObject(const QString &presetName, const QVariantHash &attributes);
 
 protected:
     void clear();

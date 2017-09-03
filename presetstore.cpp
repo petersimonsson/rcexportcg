@@ -63,7 +63,7 @@ void PresetStore::loadPresets()
     }
 }
 
-QString PresetStore::createObject(const QString &presetName, const QHash<QString, QString> &attributes)
+QString PresetStore::createObject(const QString &presetName, const QVariantHash &attributes)
 {
     Preset *preset = m_presets.value(presetName);
     QString data;
@@ -77,7 +77,7 @@ QString PresetStore::createObject(const QString &presetName, const QHash<QString
 
         while((offset = regexp.indexIn(data, offset)) != -1)
         {
-            QString replace = attributes.value(regexp.cap(1));
+            QString replace = attributes.value(regexp.cap(1)).toString();
 
             if(!replace.isEmpty())
             {

@@ -171,6 +171,7 @@ void RundownCreator::handleRows(const QByteArray &data)
                 row->setRowId(rowId);
                 row->setPageNumber(object.value("PageNumber").toString());
                 row->setStorySlug(object.value("StorySlug").toString());
+                row->setAttributes(payloadObject.toVariantHash());
                 m_rundownRowModel->appendRow(row);
             }
         }
