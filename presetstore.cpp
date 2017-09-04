@@ -26,6 +26,8 @@
 #include <QXmlStreamWriter>
 #include <QIODevice>
 #include <QSettings>
+#include <QSqlDatabase>
+#include <QSqlQuery>
 
 PresetStore::PresetStore(QObject *parent) : QObject(parent)
 {
@@ -65,28 +67,27 @@ void PresetStore::clear()
 void PresetStore::loadPresets()
 {
     clear();
+    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
+    db.setDatabaseName(QDir::homePath() + "/.CasparCG/Client/Database.s3db");
 
-    QDir presetDir(QDir::homePath() + "/.rcexportcg/presets");
-    presetDir.setNameFilters(QStringList() << "*.xml");
-
-    // if the preset dir does not exist create it
-    if(!presetDir.exists())
-        presetDir.mkdir(presetDir.absolutePath());
-
-    foreach(const QString &filename, presetDir.entryList())
+    if(!db.open())
     {
-        QFile file(presetDir.absoluteFilePath(filename));
-
-        if(file.open(QFile::ReadOnly))
-        {
-            QString data;
-            data = QString::fromUtf8(file.readAll());
-            //Remove <xml> and <items> elements
-            data = data.mid(28, data.count() - 37);
-            Preset *preset = new Preset(filename.left(filename.count() - 4), data);
-            m_presets.insert(preset->name(), preset);
-        }
+        qWarning() << "Failed to open CasparCG Client database.";
+        return;
     }
+
+    QSqlQuery query("SELECT * FROM Preset");
+
+    while(query.next())
+    {
+        QString data = query.value(2).toString();
+        //Remove <xml> and <items> elements
+        data = data.mid(28, data.count() - 37);
+        Preset *preset = new Preset(query.value(1).toString(), data);
+        m_presets.insert(preset->name(), preset);
+    }
+
+    db.close();
 }
 
 QString PresetStore::createObject(const QString &presetName, const QVariantHash &attributes)

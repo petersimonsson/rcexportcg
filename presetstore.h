@@ -25,6 +25,7 @@ class Preset;
 class RundownRowModel;
 
 class QIODevice;
+class QSqlDatabase;
 
 class PresetStore : public QObject
 {
