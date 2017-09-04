@@ -51,8 +51,6 @@ private slots:
 
     void showRundownCreatorError(const QString &errorString);
 
-    void openPresetFolder();
-
 private:
     Ui::MainWindow *ui;
 

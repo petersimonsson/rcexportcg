@@ -79,8 +79,6 @@
      <string>Presets</string>
     </property>
     <addaction name="actionReload"/>
-    <addaction name="separator"/>
-    <addaction name="actionOpen_Presets_Folder"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuPresets"/>
