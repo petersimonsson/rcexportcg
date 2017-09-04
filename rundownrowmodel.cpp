@@ -21,7 +21,8 @@
 #include <QIcon>
 
 RundownRowModel::RundownRowModel(QObject *parent) :
-    QAbstractItemModel(parent)
+    QAbstractItemModel(parent), m_videoIcon(":/icons/Movie.png"),
+    m_imageIcon(":/icons/Still.png")
 {
 }
 
@@ -100,9 +101,9 @@ QVariant RundownRowModel::data(const QModelIndex &index, int role) const
         if(index.column() == 0)
         {
             if(row->type() == "video")
-                return QIcon(":/icons/Movie.png");
+                return m_videoIcon;
             else if(row->type() == "image")
-                return QIcon(":/icons/Still.png");
+                return m_imageIcon;
         }
     }
 
