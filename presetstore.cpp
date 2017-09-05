@@ -46,6 +46,7 @@ PresetStore::~PresetStore()
 {
     QSettings settings;
     settings.beginGroup("CasparCG/DefaultPresets");
+    settings.remove("");
 
     QHash<QString, QString>::iterator it = m_defaultPresets.begin();
     for(; it != m_defaultPresets.end(); ++it)
