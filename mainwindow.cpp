@@ -30,6 +30,7 @@
 #include <QMessageBox>
 #include <QScopedPointer>
 #include <QLabel>
+#include <QTextCursor>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -58,9 +59,11 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->rundownRowView->header()->setSectionResizeMode(QHeaderView::ResizeToContents);
 
     m_presetStore = new PresetStore(this);
-    m_presetStore->loadPresets();
 
     connect(ui->actionReload, &QAction::triggered, m_presetStore, &PresetStore::loadPresets);
+    connect(m_presetStore, &PresetStore::logMessage, this, &MainWindow::appendToLog);
+
+    m_presetStore->loadPresets();
 
     QSettings settings;
     m_rundownCreator->setApiUrl(settings.value("RundownCreator/Url").toString());
@@ -157,4 +160,11 @@ void MainWindow::editSettings()
 void MainWindow::showRundownCreatorError(const QString &errorString)
 {
     QMessageBox::warning(this, tr("RundownCreator Connection Error"), errorString);
+}
+
+void MainWindow::appendToLog(const QString &message)
+{
+    QTextCursor cursor = ui->logView->textCursor();
+    cursor.movePosition(QTextCursor::End);
+    cursor.insertText(message + "\n");
 }

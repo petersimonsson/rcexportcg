@@ -50,6 +50,9 @@ protected:
 private:
     QHash<QString, Preset*> m_presets;
     QHash<QString, QString> m_defaultPresets;
+
+signals:
+    void logMessage(const QString &message);
 };
 
 #endif // PRESETSTORE_H

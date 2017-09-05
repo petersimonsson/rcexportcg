@@ -66,17 +66,19 @@ void PresetStore::clear()
 
 void PresetStore::loadPresets()
 {
+    emit logMessage(tr("Loading presets from CasparCG Client database..."));
     clear();
     QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
     db.setDatabaseName(QDir::homePath() + "/.CasparCG/Client/Database.s3db");
 
     if(!db.open())
     {
-        qWarning() << "Failed to open CasparCG Client database.";
+        emit logMessage(tr("Failed to open CasparCG Client database."));
         return;
     }
 
     QSqlQuery query("SELECT * FROM Preset");
+    QStringList logList;
 
     while(query.next())
     {
@@ -85,7 +87,10 @@ void PresetStore::loadPresets()
         data = data.mid(28, data.count() - 37);
         Preset *preset = new Preset(query.value(1).toString(), data);
         m_presets.insert(preset->name(), preset);
+        logList.append(preset->name());
     }
+
+    emit logMessage(tr("Found: %1").arg(logList.join(", ")));
 
     db.close();
 }
@@ -123,6 +128,7 @@ QString PresetStore::createObject(const QString &presetName, const QVariantHash 
 
 void PresetStore::generateCasparCG(RundownRowModel *rowModel, QIODevice *output)
 {
+    emit logMessage(tr("Generating CasparCG rundown..."));
     QXmlStreamWriter writer;
     writer.setAutoFormatting(true);
 
@@ -139,10 +145,21 @@ void PresetStore::generateCasparCG(RundownRowModel *rowModel, QIODevice *output)
         if(!row->attributes().value("preset").toString().isEmpty())
             presetName = row->attributes().value("preset").toString();
 
+        if(presetName.isEmpty())
+        {
+            QStringList attrString;
+            QVariantHash attrHash = row->attributes();
+            QVariantHash::iterator it = attrHash.begin();
+            for(; it != attrHash.end(); ++it)
+                attrString.append(tr("%1 = %2").arg(it.key(), it.value().toString()));
+            emit logMessage(tr("Did not find a preset for %1 (%2)").arg(row->type(), attrString.join(", ")));
+        }
+
         QString data = createObject(presetName, row->attributes());
         output->write(data.toUtf8());
     }
 
     writer.writeEndElement();
     writer.writeEndDocument();
+    emit logMessage(tr("Done."));
 }

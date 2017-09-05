@@ -51,6 +51,8 @@ private slots:
 
     void showRundownCreatorError(const QString &errorString);
 
+    void appendToLog(const QString &message);
+
 private:
     Ui::MainWindow *ui;
 
