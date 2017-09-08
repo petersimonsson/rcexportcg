@@ -105,9 +105,9 @@ QVariant SettingsModel::headerData(int section, Qt::Orientation orientation, int
         switch(section)
         {
         case 0:
-            return tr("Object");
+            return tr("Rundown Object");
         case 1:
-            return tr("Preset");
+            return tr("CasparCG Preset");
         }
     }
 
