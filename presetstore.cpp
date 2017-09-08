@@ -31,6 +31,9 @@
 
 PresetStore::PresetStore(QObject *parent) : QObject(parent)
 {
+    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
+    db.setDatabaseName(QDir::homePath() + "/.CasparCG/Client/Database.s3db");
+
     QSettings settings;
     settings.beginGroup("CasparCG/DefaultPresets");
 
@@ -69,10 +72,10 @@ void PresetStore::loadPresets()
 {
     emit logMessage(tr("Loading presets from CasparCG Client database..."));
     clear();
-    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
-    db.setDatabaseName(QDir::homePath() + "/.CasparCG/Client/Database.s3db");
 
-    if(!db.open())
+    QSqlDatabase db = QSqlDatabase::database();
+
+    if(!db.isOpen())
     {
         emit logMessage(tr("Failed to open CasparCG Client database."));
         return;
