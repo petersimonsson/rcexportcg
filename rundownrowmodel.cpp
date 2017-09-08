@@ -18,11 +18,8 @@
 #include "rundownrowmodel.h"
 #include "rundownrow.h"
 
-#include <QIcon>
-
 RundownRowModel::RundownRowModel(QObject *parent) :
-    QAbstractItemModel(parent), m_videoIcon(":/icons/Movie.png"),
-    m_imageIcon(":/icons/Still.png")
+    QAbstractItemModel(parent)
 {
 }
 
@@ -97,14 +94,6 @@ QVariant RundownRowModel::data(const QModelIndex &index, int role) const
             return row->attributes().value("file").toString();
         }
         break;
-    case Qt::DecorationRole:
-        if(index.column() == 0)
-        {
-            if(row->type() == "video")
-                return m_videoIcon;
-            else if(row->type() == "image")
-                return m_imageIcon;
-        }
     }
 
     return QVariant();

@@ -45,8 +45,6 @@ public:
 
 private:
     QList<RundownRow*> m_rowList;
-    QIcon m_videoIcon;
-    QIcon m_imageIcon;
 };
 
 #endif // RUNDOWNROWMODEL_H
