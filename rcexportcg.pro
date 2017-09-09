@@ -33,7 +33,8 @@ SOURCES += \
     preset.cpp \
     presetstore.cpp \
     settingsmodel.cpp \
-    logmodel.cpp
+    logmodel.cpp \
+    settingsdelegate.cpp
 
 HEADERS += \
     mainwindow.h \
@@ -45,7 +46,8 @@ HEADERS += \
     preset.h \
     presetstore.h \
     settingsmodel.h \
-    logmodel.h
+    logmodel.h \
+    settingsdelegate.h
 
 FORMS += \
     mainwindow.ui \

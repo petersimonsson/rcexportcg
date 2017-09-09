@@ -133,7 +133,7 @@ void MainWindow::generateCasparCG()
 void MainWindow::editSettings()
 {
     QSettings settings;
-    SettingsDialog *dialog = new SettingsDialog(this);
+    SettingsDialog *dialog = new SettingsDialog(m_presetStore->presets(), this);
 
     dialog->setRundownCreatorUrl(settings.value("RundownCreator/Url").toString());
     dialog->setRundownCreatorApiKey(settings.value("RundownCreator/ApiKey").toString());

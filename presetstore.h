@@ -39,6 +39,8 @@ public:
     void setDefaultPresets(const QHash<QString, QString> &defaults) { m_defaultPresets = defaults; }
     QHash<QString, QString> defaultPresets() const { return m_defaultPresets; }
 
+    QStringList presets() const { return m_presets.keys(); }
+
 public slots:
     void loadPresets();
 

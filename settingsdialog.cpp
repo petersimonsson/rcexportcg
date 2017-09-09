@@ -18,8 +18,9 @@
 #include "settingsdialog.h"
 #include "ui_settingsdialog.h"
 #include "settingsmodel.h"
+#include "settingsdelegate.h"
 
-SettingsDialog::SettingsDialog(QWidget *parent) :
+SettingsDialog::SettingsDialog(const QStringList &presets, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::SettingsDialog)
 {
@@ -27,6 +28,10 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
 
     m_objectModel = new SettingsModel(this);
     ui->objectView->setModel(m_objectModel);
+
+    SettingsDelegate *delegate = new SettingsDelegate(ui->objectView);
+    delegate->setPresets(presets);
+    ui->objectView->setItemDelegate(delegate);
 
     connect(ui->addObjectButton, &QToolButton::clicked, this, &SettingsDialog::addObject);
     connect(ui->removeObjectButton, &QToolButton::clicked, this, &SettingsDialog::removeObject);
