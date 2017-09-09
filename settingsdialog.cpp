@@ -20,6 +20,8 @@
 #include "settingsmodel.h"
 #include "settingsdelegate.h"
 
+#include <QFileDialog>
+
 SettingsDialog::SettingsDialog(const QStringList &objects, const QStringList &presets, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::SettingsDialog)
@@ -28,6 +30,8 @@ SettingsDialog::SettingsDialog(const QStringList &objects, const QStringList &pr
 
     m_objectModel = new SettingsModel(this);
     ui->objectView->setModel(m_objectModel);
+
+    connect(ui->browseButton, &QToolButton::clicked, this, &SettingsDialog::browseFiles);
 
     SettingsDelegate *delegate = new SettingsDelegate(ui->objectView);
     delegate->setPresets(presets);
@@ -124,4 +128,15 @@ void SettingsDialog::removeObject()
 
     QModelIndex index = selectionModel->selectedIndexes().first();
     m_objectModel->removeRow(index.row());
+}
+
+void SettingsDialog::browseFiles()
+{
+    QString file = QFileDialog::getSaveFileName(this, tr("Choose Rundown File"), ui->ccgRundownLocationEdit->text(),
+                                                "*.xml", nullptr, QFileDialog::DontConfirmOverwrite);
+
+    if(!file.isEmpty())
+    {
+        ui->ccgRundownLocationEdit->setText(file);
+    }
 }

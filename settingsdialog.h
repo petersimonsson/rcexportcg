@@ -53,6 +53,8 @@ private slots:
     void addObject();
     void removeObject();
 
+    void browseFiles();
+
 private:
     Ui::SettingsDialog *ui;
 

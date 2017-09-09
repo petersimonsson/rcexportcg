@@ -6,5 +6,6 @@
         <file>icons/bug_report.png</file>
         <file>icons/error.png</file>
         <file>icons/info.png</file>
+        <file>icons/folder_open.png</file>
     </qresource>
 </RCC>
