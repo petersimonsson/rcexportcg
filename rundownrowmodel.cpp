@@ -94,6 +94,13 @@ QVariant RundownRowModel::data(const QModelIndex &index, int role) const
             return attributesToString(row->attributes());
         }
         break;
+    case Qt::ToolTipRole:
+        switch(index.column())
+        {
+        case 2:
+            return attributesToString(row->attributes());
+        }
+        break;
     }
 
     return QVariant();
