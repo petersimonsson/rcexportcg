@@ -29,7 +29,14 @@ SettingsDelegate::SettingsDelegate(QWidget *parent) :
 QWidget *SettingsDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &option,
                                         const QModelIndex &index) const
 {
-    if(index.column() == 1)
+    if(index.column() == 0)
+    {
+        QComboBox *editor = new QComboBox(parent);
+        editor->setEditable(true);
+        editor->addItems(m_objects);
+        return editor;
+    }
+    else if(index.column() == 1)
     {
         QComboBox *editor = new QComboBox(parent);
         editor->addItems(m_presets);
@@ -43,7 +50,7 @@ QWidget *SettingsDelegate::createEditor(QWidget *parent, const QStyleOptionViewI
 
 void SettingsDelegate::setEditorData(QWidget *editor, const QModelIndex &index) const
 {
-    if(index.column() == 1)
+    if(index.column() == 0 || index.column() == 1)
     {
         QComboBox *combo = qobject_cast<QComboBox *>(editor);
         combo->setCurrentText(index.data().toString());
@@ -57,7 +64,7 @@ void SettingsDelegate::setEditorData(QWidget *editor, const QModelIndex &index) 
 void SettingsDelegate::setModelData(QWidget *editor, QAbstractItemModel *model,
                                     const QModelIndex &index) const
 {
-    if(index.column() == 1)
+    if(index.column() == 0 || index.column() == 1)
     {
         QComboBox *combo = qobject_cast<QComboBox *>(editor);
         model->setData(index, combo->currentText());
@@ -85,5 +92,18 @@ void SettingsDelegate::setPresets(const QStringList &presets)
     std::sort(m_presets.begin(), m_presets.end(),
               [&collator](const QString &preset1, const QString &preset2) {
                   return collator.compare(preset1, preset2) < 0;
+              });
+}
+
+void SettingsDelegate::setObjects(const QStringList &objects)
+{
+    m_objects = objects;
+
+    QCollator collator;
+    collator.setNumericMode(true);
+
+    std::sort(m_objects.begin(), m_objects.end(),
+              [&collator](const QString &object1, const QString &object2) {
+                  return collator.compare(object1, object2) < 0;
               });
 }

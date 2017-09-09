@@ -34,12 +34,14 @@ public:
                       const QModelIndex &index) const override;
 
     void setPresets(const QStringList &presets);
+    void setObjects(const QStringList &objects);
 
 private slots:
     void commitAndCloseEditor();
 
 private:
     QStringList m_presets;
+    QStringList m_objects;
 };
 
 #endif // SETTINGSDELEGATE_H

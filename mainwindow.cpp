@@ -20,6 +20,7 @@
 #include "rundowncreator.h"
 #include "rundown.h"
 #include "rundownrowmodel.h"
+#include "rundownrow.h"
 #include "settingsdialog.h"
 #include "presetstore.h"
 #include "logmodel.h"
@@ -32,6 +33,7 @@
 #include <QScopedPointer>
 #include <QLabel>
 #include <QTextCursor>
+#include <QSet>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -133,7 +135,15 @@ void MainWindow::generateCasparCG()
 void MainWindow::editSettings()
 {
     QSettings settings;
-    SettingsDialog *dialog = new SettingsDialog(m_presetStore->presets(), this);
+    QList<RundownRow*> rows = m_rundownCreator->rundownRowModel()->rowList();
+    QSet<QString> objects;
+
+    foreach(RundownRow *row, rows)
+    {
+        objects.insert(row->type());
+    }
+
+    SettingsDialog *dialog = new SettingsDialog(objects.values(), m_presetStore->presets(), this);
 
     dialog->setRundownCreatorUrl(settings.value("RundownCreator/Url").toString());
     dialog->setRundownCreatorApiKey(settings.value("RundownCreator/ApiKey").toString());
