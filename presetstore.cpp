@@ -151,12 +151,7 @@ void PresetStore::generateCasparCG(RundownRowModel *rowModel, QIODevice *output)
 
         if(presetName.isEmpty())
         {
-            QStringList attrString;
-            QVariantHash attrHash = row->attributes();
-            QVariantHash::iterator it = attrHash.begin();
-            for(; it != attrHash.end(); ++it)
-                attrString.append(tr("%1 = %2").arg(it.key(), it.value().toString()));
-            emit error(tr("Did not find a preset for %1 (%2)").arg(row->type(), attrString.join(", ")));
+            emit error(tr("Did not find a preset for %1 (%2)").arg(row->type(), RundownRowModel::attributesToString(row->attributes())));
         }
 
         QString data = createObject(presetName, row->attributes());

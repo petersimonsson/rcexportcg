@@ -91,7 +91,7 @@ QVariant RundownRowModel::data(const QModelIndex &index, int role) const
         case 1:
             return row->storySlug();
         case 2:
-            return row->attributes().value("file").toString();
+            return attributesToString(row->attributes());
         }
         break;
     }
@@ -114,9 +114,20 @@ QVariant RundownRowModel::headerData(int section, Qt::Orientation orientation, i
         case 1:
             return tr("Story Slug");
         case 2:
-            return tr("File");
+            return tr("Attributes");
         }
     }
 
     return QVariant();
+}
+
+QString
+RundownRowModel::attributesToString(const QVariantHash &attributes)
+{
+    QStringList attrString;
+    QVariantHash::const_iterator it = attributes.begin();
+    for(; it != attributes.end(); ++it)
+        attrString.append(tr("%1 = %2").arg(it.key(), it.value().toString()));
+
+    return attrString.join(", ");
 }
