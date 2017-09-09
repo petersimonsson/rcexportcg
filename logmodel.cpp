@@ -95,6 +95,14 @@ QVariant LogModel::data(const QModelIndex &index, int role) const
         case 2:
             return item->message;
         }
+        break;
+    case Qt::ToolTipRole:
+        switch(index.column())
+        {
+        case 2:
+            return item->message;
+        }
+        break;
     }
 
     return QVariant();
