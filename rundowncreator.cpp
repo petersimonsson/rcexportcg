@@ -100,21 +100,20 @@ void RundownCreator::handleFinished(QNetworkReply *reply)
             qDebug() << data;
         break;
     case 400:
-        emit error(tr("Bad request: %1").arg(QString::fromUtf8(data)));
+        emit error(tr("Bad request to RundownCreator: %1").arg(QString::fromUtf8(data)));
         break;
     case 401:
-        emit error(tr("Authentication failed!"));
+        emit error(tr("Authentication with RundownCreator failed"));
         break;
     case 500:
-        emit error(tr("Internal server error."));
+        emit error(tr("Internal RundownCreator server error."));
         break;
     default:
-        qDebug() << "Status:" << statusCode << "Data:" << data;
+        emit debug(tr("Code: %1 Data: %2").arg(statusCode).arg(QString::fromUtf8(data)));
         break;
     }
 
     reply->deleteLater();
-    emit status(tr("Ready."));
 }
 
 void RundownCreator::handleRundowns(const QByteArray &data)
@@ -141,6 +140,7 @@ void RundownCreator::handleRundowns(const QByteArray &data)
     }
 
     emit rundownsReceived();
+    emit status(tr("Rundowns received."));
 }
 
 void RundownCreator::handleRows(const QByteArray &data)
@@ -174,4 +174,6 @@ void RundownCreator::handleRows(const QByteArray &data)
             m_rundownRowModel->appendRow(row);
         }
     }
+
+    emit status(tr("Rows recieved."));
 }

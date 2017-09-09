@@ -69,6 +69,7 @@ signals:
 
     void error(const QString &errorString);
     void status(const QString &statusString);
+    void debug(const QString &message);
 };
 
 #endif // RUNDOWNCREATORFETCHER_H

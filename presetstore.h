@@ -53,6 +53,7 @@ private:
 
 signals:
     void logMessage(const QString &message);
+    void error(const QString &message);
 };
 
 #endif // PRESETSTORE_H

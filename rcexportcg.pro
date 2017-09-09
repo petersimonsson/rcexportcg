@@ -32,7 +32,8 @@ SOURCES += \
     rundownrowmodel.cpp \
     preset.cpp \
     presetstore.cpp \
-    settingsmodel.cpp
+    settingsmodel.cpp \
+    logmodel.cpp
 
 HEADERS += \
     mainwindow.h \
@@ -43,7 +44,8 @@ HEADERS += \
     rundownrowmodel.h \
     preset.h \
     presetstore.h \
-    settingsmodel.h
+    settingsmodel.h \
+    logmodel.h
 
 FORMS += \
     mainwindow.ui \

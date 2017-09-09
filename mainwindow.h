@@ -25,11 +25,8 @@ class MainWindow;
 }
 
 class RundownCreator;
-class CasparCGVideoMetaData;
-class CasparCGStillMetaData;
 class PresetStore;
-
-class QLabel;
+class LogModel;
 
 class MainWindow : public QMainWindow
 {
@@ -49,18 +46,17 @@ private slots:
 
     void editSettings();
 
-    void showRundownCreatorError(const QString &errorString);
-
-    void appendToLog(const QString &message);
+    void appendErrorToLog(const QString &errorString);
+    void appendStatusToLog(const QString &message);
+    void appendDebugToLog(const QString &message);
 
 private:
     Ui::MainWindow *ui;
 
     RundownCreator *m_rundownCreator;
-
-    QLabel *m_statusLabel;
-
     PresetStore *m_presetStore;
+
+    LogModel *m_logModel;
 };
 
 #endif // MAINWINDOW_H

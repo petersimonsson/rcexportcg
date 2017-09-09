@@ -22,6 +22,7 @@
 #include "rundownrowmodel.h"
 #include "settingsdialog.h"
 #include "presetstore.h"
+#include "logmodel.h"
 
 #include <QDebug>
 #include <QJsonDocument>
@@ -47,13 +48,15 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->rundownCombo, &QComboBox::currentTextChanged, this, &MainWindow::getRundownRows);
     connect(ui->generateButton, &QPushButton::clicked, this, &MainWindow::generateCasparCG);
 
-    m_statusLabel = new QLabel (ui->statusBar);
-    ui->statusBar->addPermanentWidget(m_statusLabel);
+    m_logModel = new LogModel(this);
+    ui->logView->setModel(m_logModel);
+    ui->logView->header()->setSectionResizeMode(QHeaderView::ResizeToContents);
 
     m_rundownCreator = new RundownCreator(this);
     connect(m_rundownCreator, &RundownCreator::rundownsReceived, this, &MainWindow::updateRundowns);
-    connect(m_rundownCreator, &RundownCreator::error, this, &MainWindow::showRundownCreatorError);
-    connect(m_rundownCreator, &RundownCreator::status, m_statusLabel, &QLabel::setText);
+    connect(m_rundownCreator, &RundownCreator::error, this, &MainWindow::appendErrorToLog);
+    connect(m_rundownCreator, &RundownCreator::status, this, &MainWindow::appendStatusToLog);
+    connect(m_rundownCreator, &RundownCreator::debug, this, &MainWindow::appendDebugToLog);
 
     ui->rundownRowView->setModel(m_rundownCreator->rundownRowModel());
     ui->rundownRowView->header()->setSectionResizeMode(QHeaderView::ResizeToContents);
@@ -61,7 +64,8 @@ MainWindow::MainWindow(QWidget *parent) :
     m_presetStore = new PresetStore(this);
 
     connect(ui->actionReload, &QAction::triggered, m_presetStore, &PresetStore::loadPresets);
-    connect(m_presetStore, &PresetStore::logMessage, this, &MainWindow::appendToLog);
+    connect(m_presetStore, &PresetStore::logMessage, this, &MainWindow::appendStatusToLog);
+    connect(m_presetStore, &PresetStore::error, this, &MainWindow::appendErrorToLog);
 
     m_presetStore->loadPresets();
 
@@ -157,14 +161,20 @@ void MainWindow::editSettings()
     }
 }
 
-void MainWindow::showRundownCreatorError(const QString &errorString)
+void MainWindow::appendErrorToLog(const QString &errorString)
 {
-    QMessageBox::warning(this, tr("RundownCreator Connection Error"), errorString);
+    m_logModel->append(LogModel::Error, errorString);
+    ui->logView->scrollToBottom();
 }
 
-void MainWindow::appendToLog(const QString &message)
+void MainWindow::appendStatusToLog(const QString &message)
 {
-    QTextCursor cursor = ui->logView->textCursor();
-    cursor.movePosition(QTextCursor::End);
-    cursor.insertText(message + "\n");
+    m_logModel->append(LogModel::Info, message);
+    ui->logView->scrollToBottom();
+}
+
+void MainWindow::appendDebugToLog(const QString &message)
+{
+    m_logModel->append(LogModel::Debug, message);
+    ui->logView->scrollToBottom();
 }

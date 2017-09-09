@@ -77,7 +77,7 @@ void PresetStore::loadPresets()
 
     if(!db.isOpen())
     {
-        emit logMessage(tr("Failed to open CasparCG Client database."));
+        emit error(tr("Failed to open CasparCG Client database."));
         return;
     }
 
@@ -156,7 +156,7 @@ void PresetStore::generateCasparCG(RundownRowModel *rowModel, QIODevice *output)
             QVariantHash::iterator it = attrHash.begin();
             for(; it != attrHash.end(); ++it)
                 attrString.append(tr("%1 = %2").arg(it.key(), it.value().toString()));
-            emit logMessage(tr("Did not find a preset for %1 (%2)").arg(row->type(), attrString.join(", ")));
+            emit error(tr("Did not find a preset for %1 (%2)").arg(row->type(), attrString.join(", ")));
         }
 
         QString data = createObject(presetName, row->attributes());
