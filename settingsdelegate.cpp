@@ -18,6 +18,7 @@
 #include "settingsdelegate.h"
 
 #include <QComboBox>
+#include <QCollator>
 
 SettingsDelegate::SettingsDelegate(QWidget *parent) :
     QStyledItemDelegate(parent)
@@ -72,4 +73,17 @@ void SettingsDelegate::commitAndCloseEditor()
     QComboBox *editor = qobject_cast<QComboBox *>(sender());
     emit commitData(editor);
     emit closeEditor(editor);
+}
+
+void SettingsDelegate::setPresets(const QStringList &presets)
+{
+    m_presets = presets;
+
+    QCollator collator;
+    collator.setNumericMode(true);
+
+    std::sort(m_presets.begin(), m_presets.end(),
+              [&collator](const QString &preset1, const QString &preset2) {
+                  return collator.compare(preset1, preset2) < 0;
+              });
 }

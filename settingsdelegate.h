@@ -33,7 +33,7 @@ public:
     void setModelData(QWidget *editor, QAbstractItemModel *model,
                       const QModelIndex &index) const override;
 
-    void setPresets(const QStringList &presets) { m_presets = presets; }
+    void setPresets(const QStringList &presets);
 
 private slots:
     void commitAndCloseEditor();
