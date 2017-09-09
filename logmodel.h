@@ -20,6 +20,7 @@
 
 #include <QAbstractItemModel>
 #include <QDateTime>
+#include <QIcon>
 
 class LogModel : public QAbstractItemModel
 {
@@ -62,6 +63,10 @@ private:
     QString typeToString(Type type) const;
 
     QList<Item*> m_items;
+
+    QIcon m_errorIcon;
+    QIcon m_infoIcon;
+    QIcon m_debugIcon;
 };
 
 #endif // LOGMODEL_H

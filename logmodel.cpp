@@ -18,7 +18,8 @@
 #include "logmodel.h"
 
 LogModel::LogModel(QObject *parent)
-    : QAbstractItemModel(parent)
+    : QAbstractItemModel(parent), m_errorIcon(":/icons/error.png"),
+      m_infoIcon(":/icons/info.png"), m_debugIcon(":/icons/bug_report.png")
 {
 }
 
@@ -36,8 +37,6 @@ QVariant LogModel::headerData(int section, Qt::Orientation orientation, int role
         case 0:
             return tr("Timestamp");
         case 1:
-            return tr("Type");
-        case 2:
             return tr("Message");
         }
     }
@@ -73,7 +72,7 @@ int LogModel::columnCount(const QModelIndex &parent) const
     if (parent.isValid())
         return 0;
 
-    return 3;
+    return 2;
 }
 
 QVariant LogModel::data(const QModelIndex &index, int role) const
@@ -91,16 +90,30 @@ QVariant LogModel::data(const QModelIndex &index, int role) const
         case 0:
             return item->timestamp;
         case 1:
-            return typeToString(item->type);
-        case 2:
             return item->message;
         }
         break;
     case Qt::ToolTipRole:
         switch(index.column())
         {
-        case 2:
+        case 0:
+            return typeToString(item->type);
+        case 1:
             return item->message;
+        }
+        break;
+    case Qt::DecorationRole:
+        if(index.column() == 0)
+        {
+            switch(item->type)
+            {
+            case Error:
+                return m_errorIcon;
+            case Info:
+                return m_infoIcon;
+            case Debug:
+                return m_debugIcon;
+            }
         }
         break;
     }
