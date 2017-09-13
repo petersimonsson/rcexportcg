@@ -34,6 +34,7 @@
 #include <QLabel>
 #include <QTextCursor>
 #include <QSet>
+#include <QCollator>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -94,7 +95,15 @@ void MainWindow::updateRundowns()
     bool block = ui->rundownCombo->blockSignals(true);
     ui->rundownCombo->clear();
 
-    foreach(Rundown *rundown, m_rundownCreator->rundownList())
+    QList<Rundown*> rundowns = m_rundownCreator->rundownList();
+    QCollator collator;
+    collator.setNumericMode(true);
+
+    std::sort(rundowns.begin(), rundowns.end(), [&collator](Rundown *r1, Rundown *r2) {
+        return collator.compare(r1->title(), r2->title()) < 0;
+    });
+
+    foreach(Rundown *rundown, rundowns)
     {
         if(!rundown->isArchived() && !rundown->isTemplate() && !rundown->isDeleted())
         {
