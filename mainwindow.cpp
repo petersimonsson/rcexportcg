@@ -100,7 +100,7 @@ void MainWindow::updateRundowns()
     collator.setNumericMode(true);
 
     std::sort(rundowns.begin(), rundowns.end(), [&collator](Rundown *r1, Rundown *r2) {
-        return collator.compare(r1->title(), r2->title()) < 0;
+        return collator.compare(r1->title(), r2->title()) > 0;
     });
 
     foreach(Rundown *rundown, rundowns)
