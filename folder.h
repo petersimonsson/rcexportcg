@@ -15,43 +15,33 @@
   You should have received a copy of the GNU General Public License
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **************************************************************************/
-#ifndef RUNDOWN_H
-#define RUNDOWN_H
+#ifndef FOLDER_H
+#define FOLDER_H
 
 #include <QString>
+#include <QList>
 
-class Rundown
+class Rundown;
+
+class Folder
 {
 public:
-    Rundown(quint32 id, const QString &title);
+    Folder(quint32 id);
+    ~Folder();
 
     quint32 id() const { return m_id; }
-    QString title() const { return m_title; }
 
-    void setFolderId(quint32 id) { m_folderId = id; }
-    quint32 folderId() const { return m_folderId; }
+    void setName(const QString &name) { m_name = name; }
+    QString name() const { return m_name; }
 
-    void setFrozen(bool state) { m_frozen = state; }
-    bool isFrozen() const { return m_frozen; }
-    void setLocked(bool state) { m_locked = state; }
-    bool isLocked() const { return m_locked; }
-    void setArchived(bool state) { m_archived = state; }
-    bool isArchived() const { return m_archived; }
-    void setTemplate(bool state) { m_template = state; }
-    bool isTemplate() const { return m_template; }
-    void setDeleted(bool state) { m_deleted = state; }
-    bool isDeleted () const { return m_deleted; }
+    void appendRundown(Rundown *rundown);
+    QList<Rundown*> rundownList() const { return m_rundownList; }
 
 private:
     quint32 m_id;
-    quint32 m_folderId;
-    QString m_title;
+    QString m_name;
 
-    bool m_frozen;
-    bool m_locked;
-    bool m_archived;
-    bool m_template;
-    bool m_deleted;
+    QList<Rundown*> m_rundownList;
 };
 
-#endif // RUNDOWN_H
+#endif // FOLDER_H

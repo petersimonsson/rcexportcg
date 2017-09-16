@@ -24,6 +24,7 @@
 #include "settingsdialog.h"
 #include "presetstore.h"
 #include "logmodel.h"
+#include "folder.h"
 
 #include <QDebug>
 #include <QJsonDocument>
@@ -86,7 +87,7 @@ MainWindow::~MainWindow()
 void MainWindow::getRundowns()
 {
     if(m_rundownCreator->apiUrl().isValid())
-        m_rundownCreator->getRundowns();
+        m_rundownCreator->getFoldersAndRundows();
 }
 
 void MainWindow::updateRundowns()
@@ -94,25 +95,50 @@ void MainWindow::updateRundowns()
     QString oldSelection = ui->rundownCombo->currentText();
     bool block = ui->rundownCombo->blockSignals(true);
     ui->rundownCombo->clear();
+    QMap<QString, quint32> sortMap;
+    QHash<quint32, Folder*> folderHash = m_rundownCreator->folderHash();
+    QString firstRundown;
 
-    QList<Rundown*> rundowns = m_rundownCreator->rundownList();
-    QCollator collator;
-    collator.setNumericMode(true);
-
-    std::sort(rundowns.begin(), rundowns.end(), [&collator](Rundown *r1, Rundown *r2) {
-        return collator.compare(r1->title(), r2->title()) > 0;
-    });
-
-    foreach(Rundown *rundown, rundowns)
+    foreach(Folder *folder, folderHash)
     {
-        if(!rundown->isArchived() && !rundown->isTemplate() && !rundown->isDeleted())
+        sortMap.insert(folder->name(), folder->id());
+    }
+
+    foreach(quint32 id, sortMap)
+    {
+        Folder *folder = folderHash.value(id);
+        ui->rundownCombo->addParentItem(folder->name());
+        QList<Rundown*> rundowns = folder->rundownList();
+        QCollator collator;
+        collator.setNumericMode(true);
+
+        std::sort(rundowns.begin(), rundowns.end(), [&collator](Rundown *r1, Rundown *r2) {
+            return collator.compare(r1->title(), r2->title()) > 0;
+        });
+
+        foreach(Rundown *rundown, rundowns)
         {
-            ui->rundownCombo->addItem(rundown->title(), rundown->id());
+            if(!rundown->isArchived() && !rundown->isTemplate() && !rundown->isDeleted())
+            {
+                ui->rundownCombo->addChildItem(rundown->title(), rundown->id());
+
+                if(firstRundown.isEmpty())
+                    firstRundown = rundown->title();
+            }
         }
     }
 
     ui->rundownCombo->blockSignals(block);
-    ui->rundownCombo->setCurrentText(oldSelection);
+
+    if(ui->rundownCombo->findText(oldSelection) != -1)
+    {
+        ui->rundownCombo->setCurrentText(oldSelection);
+    }
+    else
+    {
+        ui->rundownCombo->setCurrentText(firstRundown);
+    }
+
     getRundownRows();
 }
 

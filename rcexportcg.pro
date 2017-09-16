@@ -34,7 +34,10 @@ SOURCES += \
     presetstore.cpp \
     settingsmodel.cpp \
     logmodel.cpp \
-    settingsdelegate.cpp
+    settingsdelegate.cpp \
+    folder.cpp \
+    groupedcombobox.cpp \
+    groupedcomboboxdelegate.cpp
 
 HEADERS += \
     mainwindow.h \
@@ -47,7 +50,10 @@ HEADERS += \
     presetstore.h \
     settingsmodel.h \
     logmodel.h \
-    settingsdelegate.h
+    settingsdelegate.h \
+    folder.h \
+    groupedcombobox.h \
+    groupedcomboboxdelegate.h
 
 FORMS += \
     mainwindow.ui \

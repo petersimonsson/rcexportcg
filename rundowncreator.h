@@ -28,6 +28,7 @@ class QNetworkReply;
 
 class Rundown;
 class RundownRowModel;
+class Folder;
 
 class RundownCreator : public QObject
 {
@@ -41,19 +42,22 @@ public:
     void setApiKey(const QString &key) { m_apiKey = key; }
     void setApiToken(const QString &token) { m_apiToken = token; }
 
-    void getRundowns();
-    void fetchRows(quint32 rundownId);
-
-    QList<Rundown*> rundownList() const { return m_rundownList; }
     RundownRowModel *rundownRowModel() const { return m_rundownRowModel; }
+    QHash<quint32, Folder*> folderHash() const { return m_folderHash; }
+
+public slots:
+    void getFoldersAndRundows();
+    void fetchRows(quint32 rundownId);
 
 private slots:
     void handleFinished(QNetworkReply *reply);
     void handleRundowns(const QByteArray &data);
     void handleRows(const QByteArray &data);
+    void handleFolders(const QByteArray &data);
 
 private:
     QUrlQuery createRequestQuery(const QString &action, const QList<QPair<QString, QString> > &extraItems = QList<QPair<QString, QString> >()) const;
+    void getRundowns();
 
     QUrl m_apiUrl;
     QString m_apiKey;
@@ -61,7 +65,7 @@ private:
 
     QNetworkAccessManager *m_netManager;
 
-    QList<Rundown*> m_rundownList;
+    QHash<quint32, Folder*> m_folderHash;
     RundownRowModel *m_rundownRowModel;
 
 signals:

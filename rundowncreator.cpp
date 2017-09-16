@@ -19,6 +19,7 @@
 #include "rundown.h"
 #include "rundownrow.h"
 #include "rundownrowmodel.h"
+#include "folder.h"
 
 #include <QNetworkAccessManager>
 #include <QNetworkRequest>
@@ -39,8 +40,8 @@ RundownCreator::RundownCreator(QObject *parent) : QObject(parent)
 
 RundownCreator::~RundownCreator()
 {
-    qDeleteAll(m_rundownList);
-    m_rundownList.clear();
+    qDeleteAll(m_folderHash);
+    m_folderHash.clear();
 }
 
 QUrlQuery RundownCreator::createRequestQuery(const QString &action, const QList<QPair<QString, QString> > &extraItems) const
@@ -57,6 +58,16 @@ QUrlQuery RundownCreator::createRequestQuery(const QString &action, const QList<
     }
 
     return query;
+}
+
+void RundownCreator::getFoldersAndRundows()
+{
+    QUrl requestUrl = m_apiUrl;
+    requestUrl.setQuery(createRequestQuery("getFolders"));
+
+    QNetworkRequest request(requestUrl);
+    m_netManager->get(request);
+    emit status(tr("Fetching folders..."));
 }
 
 void RundownCreator::getRundowns()
@@ -96,6 +107,8 @@ void RundownCreator::handleFinished(QNetworkReply *reply)
             handleRundowns(data);
         else if (query.contains("Action=getRows"))
             handleRows(data);
+        else if(query.contains("Action=getFolders"))
+            handleFolders(data);
         else
             qDebug() << data;
         break;
@@ -118,10 +131,6 @@ void RundownCreator::handleFinished(QNetworkReply *reply)
 
 void RundownCreator::handleRundowns(const QByteArray &data)
 {
-    // Remove old list
-    qDeleteAll(m_rundownList);
-    m_rundownList.clear();
-
     QJsonDocument doc = QJsonDocument::fromJson(data);
 
     QJsonArray array = doc.array();
@@ -131,12 +140,23 @@ void RundownCreator::handleRundowns(const QByteArray &data)
         QJsonObject object = value.toObject();
         Rundown *rundown = new Rundown(object.value("RundownID").toInt(),
                                        object.value("Title").toString());
+        rundown->setFolderId(object.value("FolderID").toInt());
         rundown->setFrozen(object.value("Frozen").toInt());
         rundown->setLocked(object.value("Locked").toInt());
         rundown->setArchived(object.value("Archived").toInt());
         rundown->setTemplate(object.value("Template").toInt());
         rundown->setDeleted(object.value("Deleted").toInt());
-        m_rundownList.append(rundown);
+        Folder *folder = m_folderHash.value(rundown->folderId());
+
+        if(folder)
+        {
+            folder->appendRundown(rundown);
+        }
+        else
+        {
+            emit error(tr("Did not find the folder for %1").arg(rundown->title()));
+            delete rundown;
+        }
     }
 
     emit rundownsReceived();
@@ -176,4 +196,24 @@ void RundownCreator::handleRows(const QByteArray &data)
     }
 
     emit status(tr("Rows recieved."));
+}
+
+void RundownCreator::handleFolders(const QByteArray &data)
+{
+    qDeleteAll(m_folderHash);
+    m_folderHash.clear();
+
+    QJsonDocument rowsDocument = QJsonDocument::fromJson(data);
+    QJsonArray array = rowsDocument.array();
+
+    foreach(const QJsonValue &value, array)
+    {
+        QJsonObject object = value.toObject();
+        Folder *folder = new Folder(object.value("FolderID").toInt());
+        folder->setName(object.value("Name").toString());
+        m_folderHash.insert(folder->id(), folder);
+    }
+
+    emit status(tr("Folders received."));
+    getRundowns();
 }
