@@ -15,54 +15,36 @@
   You should have received a copy of the GNU General Public License
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **************************************************************************/
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#ifndef PRESETOBJECTDIALOG_H
+#define PRESETOBJECTDIALOG_H
 
-#include <QMainWindow>
+#include <QDialog>
 
 namespace Ui {
-class MainWindow;
+class PresetObjectDialog;
 }
 
-class RundownCreator;
-class PresetStore;
-class LogModel;
+class SettingsModel;
 
-class MainWindow : public QMainWindow
+class PresetObjectDialog : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit MainWindow(QWidget *parent = 0);
-    ~MainWindow();
+    explicit PresetObjectDialog(const QStringList &objects, const QStringList &presets, QWidget *parent = nullptr);
+    ~PresetObjectDialog();
+
+    void setObjectPresets(const QHash<QString, QString> &presets);
+    QHash<QString, QString> objectPresets() const;
 
 private slots:
-    void getRundowns();
-
-    void updateRundowns();
-    void getRundownRows();
-
-    void generateCasparCG();
-
-    void editSettings();
-
-    void appendErrorToLog(const QString &errorString);
-    void appendStatusToLog(const QString &message);
-    void appendDebugToLog(const QString &message);
-
-    void validateRundownRows();
-
-    void showAboutDialog();
-
-    void showPresetObjectDialog();
+    void addObject();
+    void removeObject();
 
 private:
-    Ui::MainWindow *ui;
+    Ui::PresetObjectDialog *ui;
 
-    RundownCreator *m_rundownCreator;
-    PresetStore *m_presetStore;
-
-    LogModel *m_logModel;
+    SettingsModel *m_objectModel;
 };
 
-#endif // MAINWINDOW_H
+#endif // PRESETOBJECTDIALOG_H

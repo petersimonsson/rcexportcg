@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>522</width>
-    <height>377</height>
+    <height>198</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -84,16 +84,6 @@
        <string>CasparCG</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout_5">
-       <item row="0" column="0">
-        <widget class="QLabel" name="label_5">
-         <property name="text">
-          <string>Rundown File:</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="1">
-        <widget class="QLineEdit" name="ccgRundownLocationEdit"/>
-       </item>
        <item row="0" column="2">
         <widget class="QToolButton" name="browseButton">
          <property name="toolTip">
@@ -111,67 +101,28 @@
          </property>
         </widget>
        </item>
-       <item row="1" column="0" colspan="3">
-        <widget class="QGroupBox" name="groupBox">
-         <property name="title">
-          <string>Object Presets</string>
+       <item row="0" column="1">
+        <widget class="QLineEdit" name="ccgRundownLocationEdit"/>
+       </item>
+       <item row="0" column="0">
+        <widget class="QLabel" name="label_5">
+         <property name="text">
+          <string>Rundown File:</string>
          </property>
-         <property name="flat">
-          <bool>true</bool>
-         </property>
-         <layout class="QGridLayout" name="gridLayout_3">
-          <item row="1" column="1">
-           <widget class="QToolButton" name="removeObjectButton">
-            <property name="toolTip">
-             <string>Remove</string>
-            </property>
-            <property name="text">
-             <string>Remove</string>
-            </property>
-            <property name="icon">
-             <iconset resource="rcexportcg.qrc">
-              <normaloff>:/icons/remove.png</normaloff>:/icons/remove.png</iconset>
-            </property>
-            <property name="autoRaise">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0">
-           <widget class="QToolButton" name="addObjectButton">
-            <property name="toolTip">
-             <string>Add</string>
-            </property>
-            <property name="text">
-             <string>Add</string>
-            </property>
-            <property name="icon">
-             <iconset resource="rcexportcg.qrc">
-              <normaloff>:/icons/add.png</normaloff>:/icons/add.png</iconset>
-            </property>
-            <property name="autoRaise">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="2">
-           <spacer name="horizontalSpacer">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>40</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item row="0" column="0" colspan="3">
-           <widget class="QTreeView" name="objectView"/>
-          </item>
-         </layout>
         </widget>
+       </item>
+       <item row="1" column="1">
+        <spacer name="verticalSpacer_2">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
        </item>
       </layout>
      </widget>
@@ -195,8 +146,8 @@
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>266</x>
-     <y>652</y>
+     <x>275</x>
+     <y>367</y>
     </hint>
     <hint type="destinationlabel">
      <x>157</x>
@@ -211,8 +162,8 @@
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>334</x>
-     <y>652</y>
+     <x>343</x>
+     <y>367</y>
     </hint>
     <hint type="destinationlabel">
      <x>286</x>

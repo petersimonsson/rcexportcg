@@ -25,6 +25,7 @@
 #include "presetstore.h"
 #include "logmodel.h"
 #include "folder.h"
+#include "presetobjectdialog.h"
 
 #include <QDebug>
 #include <QJsonDocument>
@@ -70,6 +71,7 @@ MainWindow::MainWindow(QWidget *parent) :
     m_presetStore = new PresetStore(this);
 
     connect(ui->actionReload, &QAction::triggered, m_presetStore, &PresetStore::loadPresets);
+    connect(ui->actionDefault_Object_Map, &QAction::triggered, this, &MainWindow::showPresetObjectDialog);
     connect(m_presetStore, &PresetStore::logMessage, this, &MainWindow::appendStatusToLog);
     connect(m_presetStore, &PresetStore::error, this, &MainWindow::appendErrorToLog);
 
@@ -188,23 +190,13 @@ void MainWindow::generateCasparCG()
 void MainWindow::editSettings()
 {
     QSettings settings;
-    QList<RundownRow*> rows = m_rundownCreator->rundownRowModel()->rowList();
-    QSet<QString> objects;
-
-    foreach(RundownRow *row, rows)
-    {
-        objects.insert(row->type());
-    }
-
-    SettingsDialog *dialog = new SettingsDialog(objects.values(), m_presetStore->presets(), this);
+    QScopedPointer<SettingsDialog> dialog(new SettingsDialog(this));
 
     dialog->setRundownCreatorUrl(settings.value("RundownCreator/Url").toString());
     dialog->setRundownCreatorApiKey(settings.value("RundownCreator/ApiKey").toString());
     dialog->setRundownCreatorApiToken(settings.value("RundownCreator/ApiToken").toString());
 
     dialog->setCasparCGRundownLocation(settings.value("CasparCG/RundownLocation").toString());
-
-    dialog->setObjectPresets(m_presetStore->defaultPresets());
 
     if(dialog->exec() == QDialog::Accepted)
     {
@@ -213,8 +205,6 @@ void MainWindow::editSettings()
         settings.setValue("RundownCreator/ApiToken", dialog->rundownCreatorApiToken());
 
         settings.setValue("CasparCG/RundownLocation", dialog->casparCGRundownLocation());
-
-        m_presetStore->setDefaultPresets(dialog->objectPresets());
 
         m_rundownCreator->setApiUrl(settings.value("RundownCreator/Url").toString());
         m_rundownCreator->setApiKey(settings.value("RundownCreator/ApiKey").toString());
@@ -250,4 +240,23 @@ void MainWindow::validateRundownRows()
 void MainWindow::showAboutDialog()
 {
     QMessageBox::about(this, tr("About RCExportCG"), tr("RCExportCG version %1").arg(QApplication::instance()->applicationVersion()));
+}
+
+void MainWindow::showPresetObjectDialog()
+{
+    QList<RundownRow*> rows = m_rundownCreator->rundownRowModel()->rowList();
+    QSet<QString> objects;
+
+    foreach(RundownRow *row, rows)
+    {
+        objects.insert(row->type());
+    }
+
+    QScopedPointer<PresetObjectDialog> dialog(new PresetObjectDialog(objects.values(), m_presetStore->presets(), this));
+    dialog->setObjectPresets(m_presetStore->defaultPresets());
+
+    if(dialog->exec() == QDialog::Accepted)
+    {
+        m_presetStore->setDefaultPresets(dialog->objectPresets());
+    }
 }

@@ -37,7 +37,8 @@ SOURCES += \
     settingsdelegate.cpp \
     folder.cpp \
     groupedcombobox.cpp \
-    groupedcomboboxdelegate.cpp
+    groupedcomboboxdelegate.cpp \
+    presetobjectdialog.cpp
 
 HEADERS += \
     mainwindow.h \
@@ -53,11 +54,13 @@ HEADERS += \
     settingsdelegate.h \
     folder.h \
     groupedcombobox.h \
-    groupedcomboboxdelegate.h
+    groupedcomboboxdelegate.h \
+    presetobjectdialog.h
 
 FORMS += \
     mainwindow.ui \
-    settingsdialog.ui
+    settingsdialog.ui \
+    presetobjectdialog.ui
 
 RESOURCES += \
     rcexportcg.qrc

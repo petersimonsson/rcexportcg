@@ -26,14 +26,12 @@ namespace Ui {
 class SettingsDialog;
 }
 
-class SettingsModel;
-
 class SettingsDialog : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit SettingsDialog(const QStringList &objects, const QStringList &presets, QWidget *parent = 0);
+    explicit SettingsDialog(QWidget *parent = 0);
     ~SettingsDialog();
 
     void setRundownCreatorUrl(const QString &url);
@@ -46,19 +44,11 @@ public:
     void setCasparCGRundownLocation(const QString &location);
     QString casparCGRundownLocation() const;
 
-    void setObjectPresets(const QHash<QString, QString> &presets);
-    QHash<QString, QString> objectPresets() const;
-
 private slots:
-    void addObject();
-    void removeObject();
-
     void browseFiles();
 
 private:
     Ui::SettingsDialog *ui;
-
-    SettingsModel *m_objectModel;
 };
 
 #endif // SETTINGSDIALOG_H

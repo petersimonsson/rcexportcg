@@ -130,7 +130,7 @@
      <x>0</x>
      <y>0</y>
      <width>843</width>
-     <height>20</height>
+     <height>23</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -145,6 +145,8 @@
      <string>Presets</string>
     </property>
     <addaction name="actionReload"/>
+    <addaction name="separator"/>
+    <addaction name="actionDefault_Object_Map"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -185,12 +187,17 @@
   </action>
   <action name="actionAbout">
    <property name="text">
-    <string>About RCExportCG...</string>
+    <string>&amp;About RCExportCG...</string>
    </property>
   </action>
   <action name="actionAbout_Qt">
    <property name="text">
-    <string>About Qt...</string>
+    <string>About &amp;Qt...</string>
+   </property>
+  </action>
+  <action name="actionDefault_Object_Map">
+   <property name="text">
+    <string>Default Object Map...</string>
    </property>
   </action>
  </widget>

@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>PresetObjectDialog</class>
+ <widget class="QDialog" name="PresetObjectDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>633</width>
+    <height>424</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Default Object Map</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="1" column="3">
+    <widget class="QToolButton" name="removeObjectButton">
+     <property name="toolTip">
+      <string>Remove</string>
+     </property>
+     <property name="text">
+      <string>Remove</string>
+     </property>
+     <property name="icon">
+      <iconset resource="rcexportcg.qrc">
+       <normaloff>:/icons/remove.png</normaloff>:/icons/remove.png</iconset>
+     </property>
+     <property name="autoRaise">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="4">
+    <spacer name="horizontalSpacer">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>546</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="1" column="2">
+    <widget class="QToolButton" name="addObjectButton">
+     <property name="toolTip">
+      <string>Add</string>
+     </property>
+     <property name="text">
+      <string>Add</string>
+     </property>
+     <property name="icon">
+      <iconset resource="rcexportcg.qrc">
+       <normaloff>:/icons/add.png</normaloff>:/icons/add.png</iconset>
+     </property>
+     <property name="autoRaise">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="1" colspan="4">
+    <widget class="QTreeView" name="objectView">
+     <property name="rootIsDecorated">
+      <bool>false</bool>
+     </property>
+     <property name="itemsExpandable">
+      <bool>false</bool>
+     </property>
+     <property name="allColumnsShowFocus">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="2" colspan="3">
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <tabstops>
+  <tabstop>objectView</tabstop>
+  <tabstop>addObjectButton</tabstop>
+  <tabstop>removeObjectButton</tabstop>
+ </tabstops>
+ <resources>
+  <include location="rcexportcg.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>accepted()</signal>
+   <receiver>PresetObjectDialog</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>233</x>
+     <y>279</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>157</x>
+     <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>rejected()</signal>
+   <receiver>PresetObjectDialog</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>301</x>
+     <y>285</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>286</x>
+     <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>
