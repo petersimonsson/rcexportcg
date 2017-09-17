@@ -52,6 +52,8 @@ private slots:
 
     void validateRundownRows();
 
+    void showAboutDialog();
+
 private:
     Ui::MainWindow *ui;
 

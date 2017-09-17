@@ -47,6 +47,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(ui->actionQuit, &QAction::triggered, QApplication::instance(), &QCoreApplication::quit);
     connect(ui->actionSettings, &QAction::triggered, this, &MainWindow::editSettings);
+    connect(ui->actionAbout, &QAction::triggered, this, &MainWindow::showAboutDialog);
+    connect(ui->actionAbout_Qt, &QAction::triggered, QApplication::instance(), &QApplication::aboutQt);
 
     connect(ui->rundownReloadButton, &QToolButton::clicked, this, &MainWindow::getRundowns);
     connect(ui->rundownCombo, &QComboBox::currentTextChanged, this, &MainWindow::getRundownRows);
@@ -243,4 +245,9 @@ void MainWindow::appendDebugToLog(const QString &message)
 void MainWindow::validateRundownRows()
 {
     m_presetStore->validateRows(m_rundownCreator->rundownRowModel());
+}
+
+void MainWindow::showAboutDialog()
+{
+    QMessageBox::about(this, tr("About RCExportCG"), tr("RCExportCG version %1").arg(QApplication::instance()->applicationVersion()));
 }
