@@ -167,6 +167,7 @@ void MainWindow::generateCasparCG()
         timer.setSingleShot(true);
         QEventLoop loop;
         connect(m_rundownCreator, &RundownCreator::rundownRowsReceived, &loop, &QEventLoop::quit);
+        connect(m_rundownCreator, &RundownCreator::error, &loop, &QEventLoop::quit);
         connect(&timer, &QTimer::timeout, &loop, &QEventLoop::quit);
         timer.start(20000);
         loop.exec();
