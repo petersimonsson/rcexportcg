@@ -196,6 +196,7 @@ void RundownCreator::handleRows(const QByteArray &data)
     }
 
     emit status(tr("Rows recieved."));
+    emit rundownRowsReceived();
 }
 
 void RundownCreator::handleFolders(const QByteArray &data)

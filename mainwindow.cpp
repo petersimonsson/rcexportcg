@@ -36,6 +36,8 @@
 #include <QTextCursor>
 #include <QSet>
 #include <QCollator>
+#include <QEventLoop>
+#include <QTimer>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -157,6 +159,18 @@ void MainWindow::generateCasparCG()
 
     if(!filename.isEmpty())
     {
+        m_presetStore->loadPresets();
+        getRundownRows();
+
+        // Wait for the rundown rows to be received from RundownCreator
+        QTimer timer;
+        timer.setSingleShot(true);
+        QEventLoop loop;
+        connect(m_rundownCreator, &RundownCreator::rundownRowsReceived, &loop, &QEventLoop::quit);
+        connect(&timer, &QTimer::timeout, &loop, &QEventLoop::quit);
+        timer.start(20000);
+        loop.exec();
+
         QFile file(filename);
         if(file.open(QFile::WriteOnly))
         {

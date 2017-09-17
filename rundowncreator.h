@@ -70,6 +70,7 @@ private:
 
 signals:
     void rundownsReceived();
+    void rundownRowsReceived();
 
     void error(const QString &errorString);
     void status(const QString &statusString);
