@@ -73,6 +73,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
     m_presetStore->loadPresets();
 
+    connect(m_rundownCreator, &RundownCreator::rundownRowsReceived, this, &MainWindow::validateRundownRows);
+    connect(m_presetStore, &PresetStore::presetsLoaded, this, &MainWindow::validateRundownRows);
+
     QSettings settings;
     m_rundownCreator->setApiUrl(settings.value("RundownCreator/Url").toString());
     m_rundownCreator->setApiKey(settings.value("RundownCreator/ApiKey").toString());
@@ -235,4 +238,9 @@ void MainWindow::appendDebugToLog(const QString &message)
 {
     m_logModel->append(LogModel::Debug, message);
     ui->logView->scrollToBottom();
+}
+
+void MainWindow::validateRundownRows()
+{
+    m_presetStore->validateRows(m_rundownCreator->rundownRowModel());
 }

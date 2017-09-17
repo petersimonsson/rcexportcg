@@ -71,7 +71,7 @@ int RundownRowModel::columnCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent)
 
-    return 3;
+    return 4;
 }
 
 QVariant RundownRowModel::data(const QModelIndex &index, int role) const
@@ -83,21 +83,29 @@ QVariant RundownRowModel::data(const QModelIndex &index, int role) const
 
     switch(role)
     {
+    case Qt::DecorationRole:
+        if(index.column() == 0 && row->preset().isEmpty())
+            return QIcon(":/icons/error.png");
+        break;
     case Qt::DisplayRole:
         switch(index.column())
         {
-        case 0:
-            return row->pageNumber();
         case 1:
-            return row->storySlug();
+            return row->pageNumber();
         case 2:
+            return row->storySlug();
+        case 3:
             return attributesToString(row->attributes());
         }
         break;
     case Qt::ToolTipRole:
         switch(index.column())
         {
-        case 2:
+        case 0:
+            if(row->preset().isEmpty())
+                return tr("Missing preset");
+            break;
+        case 3:
             return attributesToString(row->attributes());
         }
         break;
@@ -116,16 +124,47 @@ QVariant RundownRowModel::headerData(int section, Qt::Orientation orientation, i
     case Qt::DisplayRole:
         switch(section)
         {
-        case 0:
-            return tr("Page");
         case 1:
-            return tr("Story Slug");
+            return tr("Page");
         case 2:
+            return tr("Story Slug");
+        case 3:
             return tr("Attributes");
         }
     }
 
     return QVariant();
+}
+
+bool RundownRowModel::setData(const QModelIndex &index, const QVariant &value, int role)
+{
+    if(!hasIndex(index.row(), index.column(), index.parent()))
+        return false;
+
+    RundownRow *row = m_rowList[index.row()];
+
+    switch(role)
+    {
+    case Qt::DisplayRole:
+    case Qt::EditRole:
+        switch(index.column())
+        {
+        case 1:
+            row->setPageNumber(value.toString());
+            emit dataChanged(index, index);
+            return true;
+        case 2:
+            row->setStorySlug(value.toString());
+            emit dataChanged(index, index);
+            return true;
+        }
+    case Qt::DecorationRole:
+        row->setPreset(value.toString());
+        emit dataChanged(index, index);
+        return true;
+    }
+
+    return false;
 }
 
 QString

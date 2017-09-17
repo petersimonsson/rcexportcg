@@ -97,6 +97,8 @@ void PresetStore::loadPresets()
     emit logMessage(tr("Found: %1").arg(logList.join(", ")));
 
     db.close();
+
+    emit presetsLoaded();
 }
 
 QString PresetStore::createObject(const QString &presetName, const QVariantHash &attributes)
@@ -161,4 +163,20 @@ void PresetStore::generateCasparCG(RundownRowModel *rowModel, QIODevice *output)
     writer.writeEndElement();
     writer.writeEndDocument();
     emit logMessage(tr("Done."));
+}
+
+void PresetStore::validateRows(RundownRowModel *rowModel)
+{
+    int rowIndex = 0;
+
+    foreach(RundownRow *row, rowModel->rowList())
+    {
+        QString presetName = m_defaultPresets.value(row->type());
+
+        if(!row->attributes().value("preset").toString().isEmpty())
+            presetName = row->attributes().value("preset").toString();
+
+        rowModel->setData(rowModel->index(rowIndex, 0, QModelIndex()), presetName, Qt::DecorationRole);
+        ++rowIndex;
+    }
 }

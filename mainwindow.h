@@ -50,6 +50,8 @@ private slots:
     void appendStatusToLog(const QString &message);
     void appendDebugToLog(const QString &message);
 
+    void validateRundownRows();
+
 private:
     Ui::MainWindow *ui;
 

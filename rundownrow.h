@@ -42,6 +42,9 @@ public:
     void setAttributes(const QVariantHash &attributes) { m_attributes = attributes; }
     QVariantHash attributes() const { return m_attributes; }
 
+    void setPreset(const QString &preset) { m_preset = preset; }
+    QString preset() const { return m_preset; }
+
 private:
     QString m_type;
 
@@ -49,6 +52,8 @@ private:
     quint32 m_rowId;
     QString m_pageNumber;
     QString m_storySlug;
+
+    QString m_preset;
 
     QVariantHash m_attributes;
 };

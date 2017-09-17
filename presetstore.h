@@ -41,6 +41,8 @@ public:
 
     QStringList presets() const { return m_presets.keys(); }
 
+    void validateRows(RundownRowModel *rowModel);
+
 public slots:
     void loadPresets();
 
@@ -56,6 +58,8 @@ private:
 signals:
     void logMessage(const QString &message);
     void error(const QString &message);
+
+    void presetsLoaded();
 };
 
 #endif // PRESETSTORE_H
