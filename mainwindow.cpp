@@ -37,8 +37,6 @@
 #include <QTextCursor>
 #include <QSet>
 #include <QCollator>
-#include <QEventLoop>
-#include <QTimer>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -53,7 +51,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(ui->rundownReloadButton, &QToolButton::clicked, this, &MainWindow::getRundowns);
     connect(ui->rundownCombo, &QComboBox::currentTextChanged, this, &MainWindow::getRundownRows);
-    connect(ui->generateButton, &QPushButton::clicked, this, &MainWindow::generateCasparCG);
 
     m_logModel = new LogModel(this);
     ui->logView->setModel(m_logModel);
@@ -79,6 +76,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(m_rundownCreator, &RundownCreator::rundownRowsReceived, this, &MainWindow::validateRundownRows);
     connect(m_presetStore, &PresetStore::presetsLoaded, this, &MainWindow::validateRundownRows);
+    connect(m_rundownCreator, &RundownCreator::rundownRowsReceived, this, &MainWindow::generateCasparCG);
 
     QSettings settings;
     m_rundownCreator->setApiUrl(settings.value("RundownCreator/Url").toString());
@@ -167,17 +165,6 @@ void MainWindow::generateCasparCG()
     if(!filename.isEmpty())
     {
         m_presetStore->loadPresets();
-        getRundownRows();
-
-        // Wait for the rundown rows to be received from RundownCreator
-        QTimer timer;
-        timer.setSingleShot(true);
-        QEventLoop loop;
-        connect(m_rundownCreator, &RundownCreator::rundownRowsReceived, &loop, &QEventLoop::quit);
-        connect(m_rundownCreator, &RundownCreator::error, &loop, &QEventLoop::quit);
-        connect(&timer, &QTimer::timeout, &loop, &QEventLoop::quit);
-        timer.start(20000);
-        loop.exec();
 
         QFile file(filename);
         if(file.open(QFile::WriteOnly))
