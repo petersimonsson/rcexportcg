@@ -28,6 +28,8 @@ class RundownCreator;
 class PresetStore;
 class LogModel;
 
+class QTimer;
+
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -63,6 +65,8 @@ private:
     PresetStore *m_presetStore;
 
     LogModel *m_logModel;
+
+    QTimer *m_updateTimer;
 };
 
 #endif // MAINWINDOW_H

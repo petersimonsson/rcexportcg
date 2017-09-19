@@ -37,6 +37,7 @@
 #include <QTextCursor>
 #include <QSet>
 #include <QCollator>
+#include <QTimer>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -82,6 +83,13 @@ MainWindow::MainWindow(QWidget *parent) :
     m_rundownCreator->setApiUrl(settings.value("RundownCreator/Url").toString());
     m_rundownCreator->setApiKey(settings.value("RundownCreator/ApiKey").toString());
     m_rundownCreator->setApiToken(settings.value("RundownCreator/ApiToken").toString());
+
+    m_updateTimer = new QTimer(this);
+    connect(m_updateTimer, &QTimer::timeout, this, &MainWindow::getRundowns);
+    m_updateTimer->setInterval(settings.value("RundownCreator/UpdateInterval", 1).toUInt() * 60000);
+
+    if(settings.value("RundownCreator/AutoUpdate", false).toBool())
+        m_updateTimer->start();
 
     getRundowns();
 }
@@ -183,6 +191,9 @@ void MainWindow::editSettings()
     dialog->setRundownCreatorApiKey(settings.value("RundownCreator/ApiKey").toString());
     dialog->setRundownCreatorApiToken(settings.value("RundownCreator/ApiToken").toString());
 
+    dialog->setRundownCreatorAutoUpdate(settings.value("RundownCreator/AutoUpdate", false).toBool());
+    dialog->setRundownCreatorUpdateInterval(settings.value("RundownCreator/UpdateInterval", 1).toUInt());
+
     dialog->setCasparCGRundownLocation(settings.value("CasparCG/RundownLocation").toString());
 
     if(dialog->exec() == QDialog::Accepted)
@@ -191,11 +202,21 @@ void MainWindow::editSettings()
         settings.setValue("RundownCreator/ApiKey", dialog->rundownCreatorApiKey());
         settings.setValue("RundownCreator/ApiToken", dialog->rundownCreatorApiToken());
 
+        settings.setValue("RundownCreator/AutoUpdate", dialog->rundownCreatorAutoUpdate());
+        settings.setValue("RundownCreator/UpdateInterval", dialog->rundownCreatorUpdateInterval());
+
         settings.setValue("CasparCG/RundownLocation", dialog->casparCGRundownLocation());
 
         m_rundownCreator->setApiUrl(settings.value("RundownCreator/Url").toString());
         m_rundownCreator->setApiKey(settings.value("RundownCreator/ApiKey").toString());
         m_rundownCreator->setApiToken(settings.value("RundownCreator/ApiToken").toString());
+
+        m_updateTimer->setInterval(dialog->rundownCreatorUpdateInterval() * 60000);
+
+        if(dialog->rundownCreatorAutoUpdate())
+            m_updateTimer->start();
+        else
+            m_updateTimer->stop();
 
         getRundowns();
     }

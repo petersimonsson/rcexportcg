@@ -64,6 +64,26 @@ QString SettingsDialog::rundownCreatorApiToken() const
     return ui->rcApiTokenEdit->text();
 }
 
+void SettingsDialog::setRundownCreatorAutoUpdate(bool update)
+{
+    ui->autoUpdateCheck->setChecked(update);
+}
+
+bool SettingsDialog::rundownCreatorAutoUpdate() const
+{
+    return ui->autoUpdateCheck->isChecked();
+}
+
+void SettingsDialog::setRundownCreatorUpdateInterval(quint8 interval)
+{
+    ui->updateIntervalSpin->setValue(interval);
+}
+
+quint8 SettingsDialog::rundownCreatorUpdateInterval() const
+{
+    return ui->updateIntervalSpin->value();
+}
+
 void SettingsDialog::setCasparCGRundownLocation(const QString &location)
 {
     ui->ccgRundownLocationEdit->setText(location);

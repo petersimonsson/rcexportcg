@@ -41,6 +41,11 @@ public:
     void setRundownCreatorApiToken(const QString &token);
     QString rundownCreatorApiToken() const;
 
+    void setRundownCreatorAutoUpdate(bool update);
+    bool rundownCreatorAutoUpdate() const;
+    void setRundownCreatorUpdateInterval(quint8 interval);
+    quint8 rundownCreatorUpdateInterval() const;
+
     void setCasparCGRundownLocation(const QString &location);
     QString casparCGRundownLocation() const;
 
