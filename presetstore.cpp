@@ -28,6 +28,8 @@
 #include <QSettings>
 #include <QSqlDatabase>
 #include <QSqlQuery>
+#include <QRegularExpression>
+#include <QRegularExpressionMatchIterator>
 
 PresetStore::PresetStore(QObject *parent) : QObject(parent)
 {
@@ -110,21 +112,17 @@ QString PresetStore::createObject(const QString &presetName, const QVariantHash 
     {
         data = preset->data();
 
-        QRegExp regexp("\\$([^\\$]*)\\$");
-        int offset = 0;
+        QRegularExpression regexp("\\$([^\\$]*)\\$");
+        QRegularExpressionMatchIterator it = regexp.globalMatch(data);
 
-        while((offset = regexp.indexIn(data, offset)) != -1)
+        while(it.hasNext())
         {
-            QString replace = attributes.value(regexp.cap(1)).toString();
+            QRegularExpressionMatch match = it.next();
+            QString replace = attributes.value(match.captured(1)).toString();
 
             if(!replace.isEmpty())
             {
-                data = data.replace(offset, regexp.matchedLength(), replace);
-                offset += replace.count();
-            }
-            else
-            {
-                offset += regexp.matchedLength();
+                data = data.replace(match.captured(0), replace);
             }
         }
     }
