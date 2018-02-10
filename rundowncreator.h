@@ -56,7 +56,8 @@ private slots:
     void handleFolders(const QByteArray &data);
 
 private:
-    QUrlQuery createRequestQuery(const QString &action, const QList<QPair<QString, QString> > &extraItems = QList<QPair<QString, QString> >()) const;
+    typedef QPair<QString, QString> QueryItem;
+    QUrlQuery createRequestQuery(const QString &action, const QList<QueryItem> &extraItems = QList<QueryItem>()) const;
     void getRundowns();
 
     QUrl m_apiUrl;

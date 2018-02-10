@@ -44,18 +44,16 @@ RundownCreator::~RundownCreator()
     m_folderHash.clear();
 }
 
-QUrlQuery RundownCreator::createRequestQuery(const QString &action, const QList<QPair<QString, QString> > &extraItems) const
+QUrlQuery RundownCreator::createRequestQuery(const QString &action, const QList<QueryItem> &extraItems) const
 {
     QUrlQuery query;
-    query.addQueryItem("APIKey", m_apiKey);
-    query.addQueryItem("APIToken", m_apiToken);
-    query.addQueryItem("Action", action);
+    QList<QueryItem> queryItems;
+    queryItems.append(QueryItem("APIKey", m_apiKey));
+    queryItems.append(QueryItem("APIToken", m_apiToken));
+    queryItems.append(QueryItem("Action", action));
+    queryItems.append(extraItems);
 
-    QList<QPair<QString, QString> >::const_iterator it = extraItems.begin();
-    for(;it != extraItems.end(); ++it)
-    {
-        query.addQueryItem((*it).first, (*it).second);
-    }
+    query.setQueryItems(queryItems);
 
     return query;
 }
@@ -83,10 +81,10 @@ void RundownCreator::getRundowns()
 void RundownCreator::fetchRows(quint32 rundownId)
 {
     QUrl requestUrl = m_apiUrl;
-    QList<QPair<QString, QString> > extraItems;
-    extraItems.append(QPair<QString, QString>("RundownID", QString::number(rundownId)));
-    extraItems.append(QPair<QString, QString>("GetObjects", "true"));
-    extraItems.append(QPair<QString, QString>("GetRowsWithoutObjects", "false"));
+    QList<QueryItem> extraItems;
+    extraItems.append(QueryItem("RundownID", QString::number(rundownId)));
+    extraItems.append(QueryItem("GetObjects", "true"));
+    extraItems.append(QueryItem("GetRowsWithoutObjects", "false"));
     requestUrl.setQuery(createRequestQuery("getRows", extraItems));
 
     QNetworkRequest request(requestUrl);
