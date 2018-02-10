@@ -77,6 +77,12 @@ void PresetStore::loadPresets()
 
     QSqlDatabase db = QSqlDatabase::database();
 
+    if(!QFile::exists(db.databaseName()))
+    {
+        emit error(tr("Did not find the CasparCG Client database."));
+        return;
+    }
+
     if(!db.isOpen())
     {
         emit error(tr("Failed to open CasparCG Client database."));
